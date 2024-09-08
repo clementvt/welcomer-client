@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID;
-const REDIRECT_URI = process.env.REDIRECT_URI;
+const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID!;
+const REDIRECT_URI = process.env.REDIRECT_URI!;
 
 export async function GET() {
   const scope = 'identify guilds';
