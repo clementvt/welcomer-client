@@ -7,16 +7,16 @@ export async function getUserGuilds(): Promise<APIGuild|null> {
     try {
         const user = await getUser()
         if (!user) return null
-        const accessToken = await prisma.user.findUnique({
-            where: { id: user.id },
+        const dbUser = await prisma.user.findUnique({
+            where: { id: user.userId },
             select: { accessToken: true },
         })
 
-        if (!user) return null
+        if (!dbUser) return null
         
         const response = await fetch('https://discord.com/api/users/@me/guilds', {
             headers: {
-                authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${dbUser.accessToken}`,
             },
         })
         

@@ -9,8 +9,6 @@ import prisma from './prisma'
 export const verifySession = cache(async () => {
   const cookie = cookies().get('session')?.value
   const session = await decrypt(cookie)
-
-  console.log('session', session)
  
   if (!session?.userId) {
     redirect('/login')
@@ -24,17 +22,15 @@ export const getUser = cache(async () => {
   if (!session) return null
  
   try {
-      const user = await prisma.user.findUnique({
+      const userId = await prisma.session.findUnique({
           where: { id: session.userId.toString() },
           //   returns only the name and email fields
           select: {
-                id: true,
-                name: true,
-                avatar: true,
+                userId: true,
             },
       })
  
-    return user
+    return userId
   } catch (error) {
     console.log('Failed to fetch user')
     return null
