@@ -16,6 +16,7 @@ datasource db {
 model User {
   id        String   @id @default(cuid()) @map("_id")
   name      String?
+  avatar    String?
   accessToken String?
   refreshToken String?
   createdAt DateTime @default(now())
