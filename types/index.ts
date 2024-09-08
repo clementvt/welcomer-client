@@ -5,6 +5,6 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 };
 
 export type SessionPayload = {
-  id: string;
+  userId: string;
   expiresAt: Date;
 }

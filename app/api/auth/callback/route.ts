@@ -50,6 +50,7 @@ export async function GET(request: NextRequest) {
       where: { id: userData.id },
       update: {
         name: userData.username,
+        avatar: userData.avatar,
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token,
       },
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
 
     await createSession(user.id);
 
-    return NextResponse.json({ user });
+    return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
     // const response = NextResponse.redirect('/dashboard');
     // response.cookies.set('user_id', userData.id, { httpOnly: true, secure: true });
     // return response;
