@@ -1,4 +1,3 @@
-import connectDb from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { createSession } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
