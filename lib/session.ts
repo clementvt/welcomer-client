@@ -3,6 +3,7 @@ import { SignJWT, jwtVerify } from 'jose'
 import { SessionPayload } from '@/types'
 import { cookies } from 'next/headers'
 import prisma from './prisma'
+import { get } from 'http'
  
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
@@ -21,8 +22,8 @@ export async function decrypt(session: string | undefined = '') {
       algorithms: ['HS256'],
     })
     return payload
-  } catch (error) {
-    console.log('Failed to verify session')
+  } catch {
+    return null
   }
 }
 
@@ -50,7 +51,7 @@ export async function createSession(id: string) {
 }
 
 export async function updateSession() {
-  const session = cookies().get('session')?.value
+  const session = getSession()
   const payload = await decrypt(session)
  
   if (!session || !payload) {
@@ -69,6 +70,22 @@ export async function updateSession() {
   })
 }
 
-export function deleteSession() {
+export function getSession() {
+  return cookies().get('session')?.value
+}
+
+export async function deleteSession() {
+  const session = getSession()
   cookies().delete('session')
+
+  if (!session) return null
+  const payload = await decrypt(session)
+
+  if (!payload) return null
+
+  await prisma.session.delete({
+    where: {
+      id: payload.userId as string,
+    },
+  })
 }

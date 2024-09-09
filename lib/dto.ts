@@ -11,6 +11,9 @@ export async function getUserData(): Promise<APIUser | null> {
             headers: {
                 Authorization: `Bearer ${user.accessToken}`,
             },
+            next: {
+                revalidate: 20,
+            }
         })
         
         return response.json()
@@ -30,6 +33,9 @@ export async function getUserGuilds(): Promise<APIGuild|null> {
             headers: {
                 Authorization: `Bearer ${user.accessToken}`,
             },
+            next: {
+                revalidate: 20,
+            }
         })
         
         return response.json()
