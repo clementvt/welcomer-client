@@ -9,9 +9,18 @@ const REDIRECT_URI = process.env.REDIRECT_URI!;
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get('code');
+  const error = searchParams.get('error');
+  const error_description = searchParams.get('error_description') ?? "An error occurred during authentication";
+
+  if (error) {
+    if (error == "access_denied") {
+      return NextResponse.redirect(new URL("/", request.nextUrl))
+    }
+    return NextResponse.redirect(new URL(`/auth/error?error=${error}&error_description=${error_description}`, request.nextUrl));
+  }
 
   if (!code) {
-    return NextResponse.redirect('/login?error=no_code');
+    return NextResponse.redirect(new URL('/auth/error?error=codeMissing&error_description=The+authorization+code+is+missing', request.nextUrl));
   }
 
   try {
@@ -30,9 +39,11 @@ export async function GET(request: NextRequest) {
     });
 
     const tokenData = await tokenResponse.json();
+    console.log('Token data:', tokenData);
 
     if (tokenData.error) {
-      return NextResponse.json({ error: tokenData.error });
+      const url = new URL(`/auth/error?error=${tokenData.error}&error_description=${tokenData.error_description}`, request.nextUrl);
+      return NextResponse.redirect(url);
     }
 
     const userResponse = await fetch('https://discord.com/api/users/@me', {
@@ -43,7 +54,7 @@ export async function GET(request: NextRequest) {
 
     const userData = await userResponse.json();
     if (!userData.id) {
-      return NextResponse.json({ error: 'No user ID found' });
+      return NextResponse.redirect(new URL('/auth/error?error=userDataMissing&error_description=An+error+occured+while+fetching+user+data', request.nextUrl));
     }
 
     const user = await prisma.user.upsert({
@@ -70,6 +81,6 @@ export async function GET(request: NextRequest) {
     // return response;
   } catch (error) {
     console.error('Authentication error:', error);
-    return NextResponse.json({ error });
+    return NextResponse.redirect(new URL('/auth/error?error=authFailed&error_description=An+unknown+error+occured+while+authenticating', request.nextUrl));
   }
 }
