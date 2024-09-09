@@ -39,7 +39,6 @@ export async function GET(request: NextRequest) {
     });
 
     const tokenData = await tokenResponse.json();
-    console.log('Token data:', tokenData);
 
     if (tokenData.error) {
       const url = new URL(`/auth/error?error=${tokenData.error}&error_description=${tokenData.error_description}`, request.nextUrl);
