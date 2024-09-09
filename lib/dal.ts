@@ -29,8 +29,15 @@ export const getUser = cache(async () => {
                 userId: true,
             },
       })
+    
+    if (!userId
+    ) return null
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId.userId },
+    })
  
-    return userId
+    return user
   } catch (error) {
     console.log('Failed to fetch user')
     return null
