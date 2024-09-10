@@ -88,4 +88,5 @@ export async function deleteSession() {
       id: payload.userId as string,
     },
   })
+  
 }

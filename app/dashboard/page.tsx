@@ -8,12 +8,11 @@ import { getGuildIcon } from "@/lib/utils";
 
 export default async function Page() {
     const guilds = await getGuilds();
-    console.log(guilds);
     
     if (!guilds) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-                <div className="inline-block w-full justify-center text-wrap">
+            <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
+                <div className="inline-block justify-center text-wrap">
                     Failed to fetch guilds
                 </div>
             </div>
@@ -22,8 +21,8 @@ export default async function Page() {
 
     if (guilds.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-                <div className="inline-block w-full justify-center text-wrap">
+            <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
+                <div className="inline-block justify-center text-wrap">
                     No guilds found
                 </div>
             </div>

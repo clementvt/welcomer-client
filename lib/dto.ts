@@ -61,7 +61,7 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
             return guild; // Add type assertion here
         }))
 
-        return guilds
+        return []
     }
     catch (error) {
         console.log('Failed to fetch guilds')
