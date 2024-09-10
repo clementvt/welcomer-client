@@ -42,7 +42,7 @@ export default async function Page() {
             <div
               className="image-blured"
               style={{
-                backgroundImage: getGuildIcon(guild),
+                backgroundImage: `url(${getGuildIcon(guild)})`,
                 filter: "blur(10px)",
                 height: "120px",
                 backgroundSize: "cover",
