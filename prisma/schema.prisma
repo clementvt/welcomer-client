@@ -15,11 +15,76 @@ datasource db {
 
 model Guild {
   id        String   @id @default(cuid()) @map("_id")
-  name      String
-  icon      String?
-  ownerId   String
+  guildId   String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Welcomer {
+  id        String   @id @default(cuid()) @map("_id")
+  guildId   String   @unique
+  enabled   Boolean  @default(false)
+  channelId String
+  message   String
+  dm        DM
+  embeds    Embed[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// TODO add image and webhook support
+
+model Goodbye {
+  id        String   @id @default(cuid()) @map("_id")
+  guildId   String   @unique
+  channelId String
+  message   String
+  embeds    Embed[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+type DM {
+  enabled Boolean @default(false)
+  message String
+  embeds Embed[] 
+}
+
+
+type Embed {
+  title String 
+  description String
+  url String
+  timestamp DateTime 
+  color Int
+  footer EmbedFooter
+  image EmbedImage
+  thumbnail EmbedImage
+  author EmbedAuthor
+  fields EmbedField[]
+}
+
+type EmbedField {
+  name String
+  value String
+  inline Boolean?
+}
+
+type EmbedAuthor {
+  name String
+  url String
+  iconUrl String
+}
+
+type EmbedImage {
+  url String
+  height Int?
+  width Int?
+}
+
+type EmbedFooter {
+  text String
+  iconUrl String?
 }
 
 model User {
