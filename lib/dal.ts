@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import prisma from './prisma'
+import { Guild } from '@prisma/client'
  
 export const verifySession = cache(async () => {
   const cookie = cookies().get('session')?.value
@@ -43,6 +44,21 @@ export const getUser = cache(async () => {
     return null
   }
 })
+
+export async function getBotGuild(id: string): Promise<Guild | null> {
+    try {
+      const guild = await prisma.guild.findUnique({
+        where: { id },
+      })
+
+      if (!guild) return null
+      return guild
+    }
+    catch (error) {
+        console.log('Failed to fetch bot guild')
+        return null
+    }
+}
 
 
 

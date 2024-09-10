@@ -75,9 +75,6 @@ export async function GET(request: NextRequest) {
     await createSession(user.id);
 
     return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
-    // const response = NextResponse.redirect('/dashboard');
-    // response.cookies.set('user_id', userData.id, { httpOnly: true, secure: true });
-    // return response;
   } catch (error) {
     console.error('Authentication error:', error);
     return NextResponse.redirect(new URL('/auth/error?error=authFailed&error_description=An+unknown+error+occured+while+authenticating', request.nextUrl));
