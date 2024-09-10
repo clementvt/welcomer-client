@@ -1,11 +1,11 @@
 import 'server-only'
  
 import { decrypt } from '@/lib/session'
+import { Guild } from '@prisma/client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import prisma from './prisma'
-import { Guild } from '@prisma/client'
  
 export const verifySession = cache(async () => {
   const cookie = cookies().get('session')?.value
@@ -39,8 +39,7 @@ export const getUser = cache(async () => {
     })
  
     return user
-  } catch (error) {
-    console.log('Failed to fetch user')
+  } catch {
     return null
   }
 })

@@ -20,7 +20,7 @@ export async function getUserData(): Promise<APIUser | null> {
         return response.json()
     }
     catch (error) {
-        console.log('Failed to fetch user data')
+        console.log('Failed to fetch user data', error)
         return null
     }
 }
@@ -42,7 +42,7 @@ export async function getUserGuilds(): Promise<APIGuild[]|null> {
         return response.json()
     }
     catch (error) {
-        console.log('Failed to fetch user guilds')
+        console.log('Failed to fetch user guilds', error)
         return null
     }
 }
@@ -61,10 +61,10 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
             return guild; // Add type assertion here
         }))
 
-        return []
+        return guilds
     }
     catch (error) {
-        console.log('Failed to fetch guilds')
+        console.log('Failed to fetch guilds', error)
         return null
     }
 }

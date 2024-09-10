@@ -1,34 +1,27 @@
 import { getGuilds } from "@/lib/dto";
+import { getGuildIcon } from "@/lib/utils";
+import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Image as UIImage } from "@nextui-org/image";
-import NextImage  from "next/image"
-import { Button } from "@nextui-org/button";
+import NextImage from "next/image";
 import Link from "next/link";
-import { getGuildIcon } from "@/lib/utils";
 
 export default async function Page() {
-    const guilds = await getGuilds();
-    
-    if (!guilds) {
-        return (
-            <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
-                <div className="inline-block justify-center text-wrap">
-                    Failed to fetch guilds
-                </div>
-            </div>
-        );
-    }
+  const guilds = await getGuilds();
 
-    if (guilds.length === 0) {
-        return (
-            <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
-                <div className="inline-block justify-center text-wrap">
-                    No guilds found
-                </div>
-            </div>
-        );
-    }
+  if (!guilds) {
+    throw new Error("Failed to fetch guilds");
+  }
 
+  if (guilds.length === 0) {
+    return (
+      <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
+        <div className="inline-block justify-center text-wrap">
+          No guilds found
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap items-center justify-center">
