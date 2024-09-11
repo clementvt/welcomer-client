@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 
 import { getGuild } from "@/lib/dal";
+import { SideBar } from "@/components/dashboard/guild/sideBar";
 
-export default async function GuildEditLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
@@ -15,5 +16,10 @@ export default async function GuildEditLayout({
 
   if (!guild) redirect("/dashboard");
 
-  return <section>{children}</section>;
+  return (
+    <section>
+      <SideBar currentGuild={guild} guilds={[]} />
+      {children}
+    </section>
+  );
 }
