@@ -47,7 +47,7 @@ export const getUser = cache(async () => {
 export async function getBotGuild(id: string): Promise<Guild | null> {
     try {
       const guild = await prisma.guild.findUnique({
-        where: { id },
+        where: { guildId: id },
       })
 
       if (!guild) return null
@@ -59,5 +59,18 @@ export async function getBotGuild(id: string): Promise<Guild | null> {
     }
 }
 
+export async function getGuild(id: string): Promise<Guild | null> {
+    try {
+      const guild = await prisma.guild.findUnique({
+        where: { guildId: id },
+      })
 
+      if (!guild) return null
+      return guild
+    }
+    catch (error) {
+        console.log('Failed to fetch guild')
+        return null
+    }
+}
 
