@@ -1,7 +1,5 @@
 "use client";
 
-import { signOut } from "@/lib/actions";
-import { getUserAvatar } from "@/lib/utils";
 import { Avatar } from "@nextui-org/avatar";
 import {
   Dropdown,
@@ -13,7 +11,10 @@ import {
 import { User } from "@nextui-org/user";
 import { APIUser } from "discord-api-types/v10";
 
-export default function NavbarUserDropdown({ user }: { user: APIUser}) {
+import { getUserAvatar } from "@/lib/utils";
+import { signOut } from "@/lib/actions";
+
+export default function NavbarUserDropdown({ user }: { user: APIUser }) {
   if (!user) return null;
 
   return (

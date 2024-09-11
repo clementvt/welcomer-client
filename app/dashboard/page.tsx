@@ -1,19 +1,16 @@
-import { getGuilds } from "@/lib/dto";
-import { getGuildIcon } from "@/lib/utils";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Image as UIImage } from "@nextui-org/image";
 import NextImage from "next/image";
 import Link from "next/link";
 
+import { getGuildIcon } from "@/lib/utils";
+import { getGuilds } from "@/lib/dto";
+
 export default async function Page() {
   const guilds = await getGuilds();
 
-  if (!guilds) {
-    throw new Error("Failed to fetch guilds");
-  }
-
-  if (guilds.length === 0) {
+  if (guilds?.length === 0) {
     return (
       <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
         <div className="inline-block justify-center text-wrap">
@@ -25,7 +22,7 @@ export default async function Page() {
 
   return (
     <div className="flex flex-wrap items-center justify-center">
-      {guilds.map((guild) => (
+      {guilds?.map((guild) => (
         <Card
           key={guild.id}
           className="w-[350] relative radius-8 mb-10 min-w-60 justify-evenly mx-4"

@@ -1,91 +1,96 @@
-import { SessionPayload } from '@/types'
-import { SignJWT, jwtVerify } from 'jose'
-import { cookies } from 'next/headers'
-import 'server-only'
-import prisma from './prisma'
- 
-const secretKey = process.env.SESSION_SECRET
-const encodedKey = new TextEncoder().encode(secretKey)
- 
+import { SignJWT, jwtVerify } from "jose";
+import { cookies } from "next/headers";
+
+import prisma from "./prisma";
+
+import { SessionPayload } from "@/types";
+
+import "server-only";
+
+const secretKey = process.env.SESSION_SECRET;
+const encodedKey = new TextEncoder().encode(secretKey);
+
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime('7d')
-    .sign(encodedKey)
+    .setExpirationTime("7d")
+    .sign(encodedKey);
 }
- 
-export async function decrypt(session: string | undefined = '') {
+
+export async function decrypt(session: string | undefined = "") {
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
-      algorithms: ['HS256'],
-    })
-    return payload
+      algorithms: ["HS256"],
+    });
+
+    return payload;
   } catch {
-    return null
+    return null;
   }
 }
 
 export async function createSession(id: string) {
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-    
-    const data = await prisma.session.create({
-        data: {
-            userId: id,
-            expiresAt,
-        },
-    })
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    const sessionId = data.id
+  const data = await prisma.session.create({
+    data: {
+      userId: id,
+      expiresAt,
+    },
+  });
 
-    const session = await encrypt({ userId: sessionId, expiresAt })
- 
-  cookies().set('session', session, {
+  const sessionId = data.id;
+
+  const session = await encrypt({ userId: sessionId, expiresAt });
+
+  cookies().set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: 'lax',
-    path: '/',
-  })
+    sameSite: "lax",
+    path: "/",
+  });
 }
 
 export async function updateSession() {
-  const session = getSession()
-  const payload = await decrypt(session)
- 
+  const session = getSession();
+  const payload = await decrypt(session);
+
   if (!session || !payload) {
-    return null
+    return null;
   }
-    // refresh the user session with refresh token
-    // TODO: implement refresh token logic    
- 
-  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  cookies().set('session', session, {
+  // refresh the user session with refresh token
+  // TODO: implement refresh token logic
+
+  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+  cookies().set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expires,
-    sameSite: 'lax',
-    path: '/',
-  })
+    sameSite: "lax",
+    path: "/",
+  });
 }
 
 export function getSession() {
-  return cookies().get('session')?.value
+  return cookies().get("session")?.value;
 }
 
 export async function deleteSession() {
-  const session = getSession()
-  cookies().delete('session')
+  const session = getSession();
 
-  if (!session) return null
-  const payload = await decrypt(session)
+  cookies().delete("session");
 
-  if (!payload) return null
+  if (!session) return null;
+  const payload = await decrypt(session);
+
+  if (!payload) return null;
 
   await prisma.session.delete({
     where: {
       id: payload.userId as string,
     },
-  })
-  
+  });
 }
