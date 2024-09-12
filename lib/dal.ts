@@ -1,6 +1,7 @@
 import "server-only";
 
 import { Guild } from "@prisma/client";
+import { APIGuild } from "discord-api-types/v10";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
@@ -58,16 +59,19 @@ export async function getBotGuild(id: string): Promise<Guild | null> {
     return guild;
   } catch (error) {
     console.log("Failed to fetch bot guild");
+    console.log(error);
 
     return null;
   }
 }
 
-export async function getGuild(id: string): Promise<Guild | null> {
+export async function getGuild(id: string): Promise<APIGuild | null> {
   const userGuilds = await getUserGuilds();
 
   if (!userGuilds) return null;
-  if (!userGuilds.find((guild) => guild.id === id)) return null;
+  const targetGuild = userGuilds.find((guild) => guild.id === id);
+
+  if (!targetGuild) return null;
   try {
     const guild = await prisma.guild.findUnique({
       where: { guildId: id },
@@ -75,7 +79,7 @@ export async function getGuild(id: string): Promise<Guild | null> {
 
     if (!guild) return null;
 
-    return guild;
+    return targetGuild;
   } catch (error) {
     console.log("Failed to fetch guild");
 

@@ -16,9 +16,14 @@ export async function signOut() {
 }
 
 export async function createGuild(guild: APIGuild) {
-  const res = await prisma.guild.create({
-    data: {
+  const res = await prisma.guild.upsert({
+    where: { guildId: guild.id },
+    update: {
+      name: guild.name,
+    },
+    create: {
       guildId: guild.id,
+      name: guild.name,
     },
   });
 

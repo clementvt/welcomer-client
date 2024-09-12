@@ -1,44 +1,94 @@
-import { Guild } from "@prisma/client";
+"use client";
+
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/dropdown";
+import { APIGuild } from "discord-api-types/v10";
 import Link from "next/link";
 
-export async function SideBar({
+import GuildCard from "./guildCard";
+
+import { APIGuildExtended } from "@/types";
+import { Card } from '@nextui-org/card';
+import { getGuildIcon } from '../../../lib/utils';
+
+export function SideBar({
   currentGuild,
   guilds,
 }: {
-  currentGuild: Guild;
-  guilds: Guild[];
+  currentGuild: APIGuild;
+  guilds: APIGuildExtended[] | undefined;
 }) {
   return (
-    <div className="h-screen w-64 bg-gray-800 text-white flex flex-col">
-      <div className="px-4 py-5">
-        <h2 className="text-2xl font-semibold">Welcomer</h2>
-      </div>
-      <nav className="flex-1 px-2 py-4">
-        <Link
-          className="block px-4 py-2 mt-2 text-sm font-medium text-white rounded-lg hover:bg-gray-600"
-          href="#"
-        >
-          Dashboard
+    <div className="w-64 h-screen bg-gray-800 text-white p-4">
+      {guilds ? (
+        <Dropdown>
+          <DropdownTrigger>
+            <button className="w-full">
+            <GuildCard guild={currentGuild} />
+            </button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="other guilds" variant="flat">
+            {guilds.map((guild) => (
+              <DropdownItem key={guild.id}>
+                <Link href={`/dashboard/${guild.id}`}>
+                  <GuildCard guild={guild} />
+                </Link>
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+      ) : (
+        <GuildCard guild={currentGuild} />
+      )}
+
+      {/* <nav className="space-y-2">
+        <Link passHref href={`/dashboard/${currentGuild.id}`}>
+          <Button className="w-full justify-start" color="primary">
+            Dashboard
+          </Button>
         </Link>
-        <Link
-          className="block px-4 py-2 mt-2 text-sm font-medium text-white rounded-lg hover:bg-gray-600"
-          href="#"
-        >
-          Welcomer
+
+        <Dropdown>
+          <DropdownTrigger className="w-full justify-start">
+            Modules
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Modules">
+            <DropdownItem key="welcomer">
+              <Link href={`/dashboard/${currentGuild.id}/welcomer`}>
+                Welcomer
+              </Link>
+            </DropdownItem>
+            <DropdownItem key="leaver">
+              <Link href={`/dashboard/${currentGuild.id}/leaver`}>Leaver</Link>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+        <Link passHref href={`/dashboard/${currentGuild.id}/help`}>
+          <Button className="w-full justify-start" color="secondary">
+            Help
+          </Button>
         </Link>
-        <Link
-          className="block px-4 py-2 mt-2 text-sm font-medium text-white rounded-lg hover:bg-gray-600"
-          href="#"
-        >
-          Leaver
-        </Link>
-        <Link
-          className="block px-4 py-2 mt-2 text-sm font-medium text-white rounded-lg hover:bg-gray-600"
-          href="#"
-        >
-          Profile
-        </Link>
-      </nav>
+      </nav> */}
+
+      {/* <div className="mt-8">
+        <Dropdown>
+          <DropdownTrigger className="w-full justify-start">
+            Switch Server
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Switch Server">
+            {guilds.map((guild) => (
+              <DropdownItem key={guild.id}>
+                <Link href={`/dashboard/${guild.id}`}>{guild.name}</Link>
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+      </div> */}
     </div>
   );
 }
