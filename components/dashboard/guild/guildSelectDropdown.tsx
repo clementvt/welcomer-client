@@ -29,7 +29,7 @@ export function GuildSelectDropdown({
       placement="bottom-start"
     >
       <DropdownTrigger>
-        <button className="w-full mt-2">
+        <button className="w-full">
           <GuildCard guild={currentGuild} />
         </button>
       </DropdownTrigger>

@@ -1,3 +1,15 @@
-export default function Page({ params }: { params: { guildId: string } }) {
-  return <div>Guild Id: {params.guildId}</div>;
+import { redirect } from "next/navigation";
+
+import { getGuild } from "@/lib/dal";
+
+export default async function Page({
+  params,
+}: {
+  params: { guildId: string };
+}) {
+  const guild = await getGuild(params.guildId);
+
+  if (!guild) redirect("/dashboard");
+
+  return <>{JSON.stringify(guild)}</>;
 }

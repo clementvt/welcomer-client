@@ -22,6 +22,10 @@ export const verifySession = cache(async () => {
   return { isAuth: true, userId: session.userId };
 });
 
+export async function userCanAccesssGuild(guildId: string): Promise<boolean> {
+  return (await getUserGuilds())?.find((guild) => guild.id === guildId) != null;
+}
+
 export const getUser = cache(async () => {
   const session = await verifySession();
 
@@ -82,6 +86,40 @@ export async function getGuild(id: string): Promise<APIGuild | null> {
     return targetGuild;
   } catch (error) {
     console.log("Failed to fetch guild");
+
+    return null;
+  }
+}
+
+export async function getWelcomer(id: string) {
+  if (!(await userCanAccesssGuild(id))) {
+    return null;
+  }
+  try {
+    const welcomeParams = await prisma.welcomer.findUnique({
+      where: { guildId: id },
+    });
+
+    return welcomeParams;
+  } catch (error) {
+    console.log("Failed to fetch welcome params");
+
+    return null;
+  }
+}
+
+export async function getGoodbye(id: string) {
+  if (!(await userCanAccesssGuild(id))) {
+    return null;
+  }
+  try {
+    const leaveParams = await prisma.goodbye.findUnique({
+      where: { guildId: id },
+    });
+
+    return leaveParams;
+  } catch (error) {
+    console.log("Failed to fetch leave params");
 
     return null;
   }
