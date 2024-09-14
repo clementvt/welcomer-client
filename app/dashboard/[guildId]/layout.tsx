@@ -4,7 +4,7 @@ import { SideBar } from "@/components/dashboard/guild/sideBar";
 import { getGuild } from "@/lib/dal";
 import { getGuilds } from "@/lib/dto";
 
-export default async function layout({
+export default async function Layout({
   children,
   params,
 }: {
@@ -19,9 +19,11 @@ export default async function layout({
   const otherGuilds = (await getGuilds())?.filter((g) => g.id !== guild.id);
 
   return (
-    <section>
+    <div className="relative flex flex-row h-screen">
       <SideBar currentGuild={guild} guilds={otherGuilds} />
-      {children}
-    </section>
+      <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+        {children}
+      </main>
+    </div>
   );
 }
