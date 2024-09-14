@@ -4,8 +4,8 @@ import { Image as UIImage } from "@nextui-org/image";
 import NextImage from "next/image";
 import Link from "next/link";
 
-import { getGuildIcon } from "@/lib/utils";
 import { getGuilds } from "@/lib/dto";
+import { getGuildIcon } from "@/lib/utils";
 
 export default async function Page() {
   const guilds = await getGuilds();
@@ -25,7 +25,7 @@ export default async function Page() {
       {guilds?.map((guild) => (
         <Card
           key={guild.id}
-          className="w-[350] relative radius-8 mb-10 min-w-60 justify-evenly mx-4"
+          className="w-[350px] relative radius-8 mb-10 min-w-60 justify-evenly mx-4"
         >
           <CardBody className="p-0 flex justify-center">
             <div
@@ -61,7 +61,7 @@ export default async function Page() {
             </div>
           </CardBody>
           <CardFooter className="flex items-center justify-between">
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center truncate">
               {guild.icon ? (
                 <UIImage
                   alt="Guild Icon"
@@ -70,36 +70,38 @@ export default async function Page() {
                     img: "border-solid border-1 border-white shadow-2xl",
                     wrapper: "mr-3 w-12 h-12",
                   }}
-                  height={50}
+                  height={48}
                   src={getGuildIcon(guild)}
-                  width={50}
+                  width={48}
                 />
               ) : (
-                <div className="w-12 h-12 border-solid border-2 border-white shadow-2xl rounded-large flex justify-center items-center mr-3">
+                <div className="w-12 h-12 shrink-0 border-solid border-2 border-white shadow-2xl rounded-large flex justify-center items-center mr-3">
                   {guild.name[0]}
                 </div>
               )}
-              {guild.name}
+              <span className="truncate">{guild.name}</span>
             </div>
-            {guild.mutual ? (
-              <Link href={`/dashboard/${guild.id}`}>
-                <Button className="right ml-2 font-bold" color="primary">
-                  Manage
-                </Button>
-              </Link>
-            ) : (
-              <Link
-                href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.AUTH_DISCORD_ID}&permissions=8&scope=bot&guild_id=${guild.id}`}
-              >
-                <Button
-                  className="right ml-2 font-bold"
-                  color="default"
-                  type="submit"
+            <div>
+              {guild.mutual ? (
+                <Link href={`/dashboard/${guild.id}`}>
+                  <Button className="right ml-2 font-bold" color="primary">
+                    Manage
+                  </Button>
+                </Link>
+              ) : (
+                <Link
+                  href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.AUTH_DISCORD_ID}&permissions=8&scope=bot&guild_id=${guild.id}`}
                 >
-                  Invite Bot
-                </Button>
-              </Link>
-            )}
+                  <Button
+                    className="right ml-2 font-bold"
+                    color="default"
+                    type="submit"
+                  >
+                    Invite Bot
+                  </Button>
+                </Link>
+              )}
+            </div>
           </CardFooter>
         </Card>
       ))}
