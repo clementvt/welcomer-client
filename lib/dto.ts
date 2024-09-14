@@ -2,8 +2,8 @@ import { APIGuild, APIUser } from "discord-api-types/v10";
 
 import { getBotGuild, getUser } from "@/lib/dal";
 import { APIGuildExtended } from "@/types";
+
 import "server-only";
-import { createGuild } from "./actions";
 
 export async function getUserData(): Promise<APIUser | null> {
   try {
@@ -22,7 +22,7 @@ export async function getUserData(): Promise<APIUser | null> {
 
     return response.json();
   } catch (error) {
-    return null
+    return null;
   }
 }
 
@@ -62,6 +62,7 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
         if (botGuild) {
           guild.mutual = true;
         }
+
         return guild;
       }),
     );
@@ -69,6 +70,7 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
     return guilds;
   } catch (error) {
     console.log("Failed to fetch guilds", error);
+
     return null;
   }
 }
