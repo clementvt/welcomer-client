@@ -9,83 +9,80 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Guild {
-  id        String   @id @default(cuid()) @map("_id")
-  guildId   String   @unique
+  id   String @unique @id 
+  welcomer Welcomer?
+  leaver   Leaver?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Welcomer {
-  id        String   @id @default(cuid()) @map("_id")
-  guildId   String   @unique
-  enabled   Boolean  @default(false)
+  id   String @unique
+  guild    Guild @relation(fields: [id], references: [id])
+  channelId String @default("")
+  message   String @default("")
+  embeds Embed[]
+  DM DM?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  welcomerId Int?
+}
+
+model Leaver {
+  id   String @unique
+  guild    Guild @relation(fields: [id], references: [id])
   channelId String
   message   String
-  dm        DM
-  embeds    Embed[]
+  embeds Embed[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  leaverId Int?
+}
+
+model DM {
+  id   String @unique
+  guild    Welcomer @relation(fields: [id], references: [id])
+  message   String
+  embeds Embed[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// TODO add image and webhook support
-
-model Goodbye {
-  id        String   @id @default(cuid()) @map("_id")
-  guildId   String   @unique
-  channelId String
-  message   String
-  embeds    Embed[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-type DM {
-  enabled Boolean @default(false)
-  message String
-  embeds Embed[] 
-}
-
-
-type Embed {
-  title String 
+model Embed {
+  id        Int @id @default(autoincrement())
+  title     String
   description String
-  url String
-  timestamp DateTime 
-  color Int
-  footer EmbedFooter
-  image EmbedImage
-  thumbnail EmbedImage
-  author EmbedAuthor
-  fields EmbedField[]
+  color     String
+  footer EmbedFooter? @relation(fields: [footerid], references: [id])
+footerid Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  welcomerId String?
+  welcomer   Welcomer? @relation(fields: [welcomerId], references: [id])
+  leaverId String?
+  leaver   Leaver? @relation(fields: [leaverId], references: [id])
+  DMId String?
+  DM   DM? @relation(fields: [DMId], references: [id])
 }
 
-type EmbedField {
-  name String
-  value String
-  inline Boolean?
+model EmbedFooter {
+  id        Int @id @default(autoincrement())
+  text      String
+  iconUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Embed Embed[]
+  
 }
 
-type EmbedAuthor {
-  name String
-  url String
-  iconUrl String
-}
 
-type EmbedImage {
-  url String
-  height Int?
-  width Int?
-}
-
-type EmbedFooter {
-  text String
-  iconUrl String?
-}
 
 model User {
   id        String   @id @default(cuid()) @map("_id")

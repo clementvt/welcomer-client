@@ -17,14 +17,21 @@ export async function signOut() {
 
 export async function createGuild(guild: APIGuild) {
   const res = await prisma.guild.upsert({
-    where: { guildId: guild.id },
-    update: {
-      name: guild.name,
-    },
+    where: { id: guild.id },
+    update: {},
     create: {
-      guildId: guild.id,
-      name: guild.name,
+      id: guild.id,
     },
+  });
+
+  return res;
+}
+
+export async function createWelcomer(guildId: string, channelId: string) {
+  const res = await prisma.welcomer.upsert({
+    where: { id: guildId },
+    update: { channelId },
+    create: { id: channelId, channelId, message: "" },
   });
 
   return res;

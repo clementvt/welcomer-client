@@ -55,7 +55,7 @@ export const getUser = cache(async () => {
 export async function getBotGuild(id: string): Promise<Guild | null> {
   try {
     const guild = await prisma.guild.findUnique({
-      where: { guildId: id },
+      where: { id: id },
     });
 
     if (!guild) return null;
@@ -78,7 +78,7 @@ export async function getGuild(id: string): Promise<APIGuild | null> {
   if (!targetGuild) return null;
   try {
     const guild = await prisma.guild.findUnique({
-      where: { guildId: id },
+      where: { id: id },
     });
 
     if (!guild) return null;
@@ -97,7 +97,7 @@ export async function getWelcomer(id: string) {
   }
   try {
     const welcomeParams = await prisma.welcomer.findUnique({
-      where: { guildId: id },
+      where: { id: id },
     });
 
     return welcomeParams;
@@ -113,8 +113,8 @@ export async function getGoodbye(id: string) {
     return null;
   }
   try {
-    const leaveParams = await prisma.goodbye.findUnique({
-      where: { guildId: id },
+    const leaveParams = await prisma.leaver.findUnique({
+      where: { id: id },
     });
 
     return leaveParams;
