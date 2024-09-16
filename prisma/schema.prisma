@@ -22,65 +22,115 @@ model Guild {
 }
 
 model Welcomer {
-  id   String @unique
-  guild    Guild @relation(fields: [id], references: [id])
-  channelId String @default("")
-  message   String @default("")
+  id   Int @unique @default(autoincrement())
+  guildId String @unique
+  guild    Guild @relation(fields: [guildId], references: [id])
+  channelId String?
+  message   String?
   embeds Embed[]
   DM DM?
-  createdAt DateTime @default(now())
+    createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  welcomerId Int?
 }
 
 model Leaver {
-  id   String @unique
-  guild    Guild @relation(fields: [id], references: [id])
-  channelId String
-  message   String
+  id   Int @unique @default(autoincrement())
+  guildId String @unique
+  guild    Guild @relation(fields: [guildId], references: [id])
+  channelId String?
+  message   String?
   embeds Embed[]
-  createdAt DateTime @default(now())
+    createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  leaverId Int?
 }
 
 model DM {
-  id   String @unique
-  guild    Welcomer @relation(fields: [id], references: [id])
-  message   String
+  id   Int @unique @default(autoincrement())
+  moduleId Int @unique
+  module    Welcomer @relation(fields: [moduleId], references: [id])
+  message   String?
   embeds Embed[]
-  createdAt DateTime @default(now())
+    createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Embed {
   id        Int @id @default(autoincrement())
-  title     String
-  description String
-  color     String
-  footer EmbedFooter? @relation(fields: [footerid], references: [id])
-footerid Int?
-  createdAt DateTime @default(now())
+  title     String?
+  description String?
+  color     Int?
+  timestamp String?
+  footer EmbedFooter?
+  fields EmbedField[]
+  author EmbedAuthor?
+  image EmbedImage?
+  thumbnail EmbedThumbnail?
+    createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  welcomerId String?
-  welcomer   Welcomer? @relation(fields: [welcomerId], references: [id])
-  leaverId String?
-  leaver   Leaver? @relation(fields: [leaverId], references: [id])
-  DMId String?
-  DM   DM? @relation(fields: [DMId], references: [id])
+  // relations
+  welcomerId Int @unique
+  welcomer Welcomer @relation(fields: [welcomerId], references: [id])
+  leaverId Int @unique
+  leaver Leaver @relation(fields: [leaverId], references: [id])
+  DMId Int @unique
+  DM DM @relation(fields: [DMId], references: [id])
+}
+
+model EmbedThumbnail {
+  id        Int @id @default(autoincrement())
+  embedId Int @unique
+  embed Embed @relation(fields: [embedId], references: [id])
+  url       String
+  width Int?
+  heigth Int?
+    createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmbedImage {
+  id        Int @id @default(autoincrement())
+  embedId Int @unique
+  embed Embed @relation(fields: [embedId], references: [id])
+  url       String
+  width Int?
+  heigth Int?
+    createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmbedAuthor {
+  id        Int @id @default(autoincrement())
+  embedId Int @unique
+  embed Embed @relation(fields: [embedId], references: [id])
+  name      String
+  iconUrl   String?
+  url       String?
+    createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmbedField {
+  id        Int @id @default(autoincrement())
+  embedId Int @unique
+  embed Embed @relation(fields: [embedId], references: [id])
+  name      String
+  value     String
+  inline    Boolean?
+    createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model EmbedFooter {
   id        Int @id @default(autoincrement())
+  embedId Int @unique
+  embed Embed @relation(fields: [embedId], references: [id])
   text      String
   iconUrl   String
-  createdAt DateTime @default(now())
+    createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Embed Embed[]
-  
 }
+
 
 
 

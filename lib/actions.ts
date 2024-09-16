@@ -27,11 +27,11 @@ export async function createGuild(guild: APIGuild) {
   return res;
 }
 
-export async function createWelcomer(guildId: string, channelId: string) {
-  const res = await prisma.welcomer.upsert({
-    where: { id: guildId },
-    update: { channelId },
-    create: { id: channelId, channelId, message: "" },
+export async function createWelcomer(guildId: string) {
+  const res = await prisma.welcomer.create({
+    data: {
+      guildId: guildId,
+    },
   });
 
   return res;
