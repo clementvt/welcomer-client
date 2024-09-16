@@ -1,10 +1,10 @@
 import { APIGuild, APIUser } from "discord-api-types/v10";
+import { cache } from "react";
 
 import { getBotGuildDb, getUser } from "@/lib/dal";
 import { APIGuildExtended } from "@/types";
 
 import "server-only";
-
 
 export async function getUserData(): Promise<APIUser | null> {
   try {
@@ -27,7 +27,7 @@ export async function getUserData(): Promise<APIUser | null> {
   }
 }
 
-export async function getUserGuilds(): Promise<APIGuild[] | null> {
+export const getUserGuilds = cache(async (): Promise<APIGuild[] | null> => {
   try {
     const user = await getUser();
 
@@ -46,7 +46,7 @@ export async function getUserGuilds(): Promise<APIGuild[] | null> {
   } catch (error) {
     return null;
   }
-}
+});
 
 export async function getGuilds(): Promise<APIGuildExtended[] | null> {
   try {
@@ -80,7 +80,6 @@ export async function getGuildChannels(
   guildId: string,
 ): Promise<APIGuild | null> {
   try {
-
     const response = await fetch(
       `https://discord.com/api/guilds/${guildId}/channels`,
       {

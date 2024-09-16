@@ -19,9 +19,9 @@ export default async function Layout({
   const otherGuilds = (await getGuilds())?.filter((g) => g.id !== guild.id);
 
   return (
-    <div className="relative flex flex-row h-screen">
+    <div className="flex flex-row h-screen relative">
       <SideBar currentGuild={guild} guilds={otherGuilds} />
-      <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+      <main className="container mx-auto ml-64 pt-16 px-6 flex-grow">
         {children}
       </main>
     </div>

@@ -18,7 +18,7 @@ export function SideBar({
   guilds: APIGuildExtended[] | undefined;
 }) {
   return (
-    <div className="w-64 h-screen bg-gray-800 text-white p-4 flex flex-col">
+    <div className="w-64 h-screen bg-gray-800 text-white p-4 flex flex-col fixed overflow-auto">
       <div className="mb-5">
         <NextLink className="flex justify-start items-center gap-1" href="/">
           <Logo />
