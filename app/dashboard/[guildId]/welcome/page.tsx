@@ -1,5 +1,6 @@
 import CreateWelcomerButton from "@/components/dashboard/guild/createWelcomerButton";
 import { getGuild, getWelcomer } from "@/lib/dal";
+import { getGuildChannels } from "@/lib/dto";
 export default async function Page({
   params,
 }: {
@@ -7,6 +8,7 @@ export default async function Page({
 }) {
   const welcomerParams = await getWelcomer(params.guildId);
   const guild = await getGuild(params.guildId);
+  const channels = await getGuildChannels(params.guildId);
 
   return (
     <>
@@ -15,6 +17,7 @@ export default async function Page({
           <h1>Welcome to {welcomerParams.guildId}</h1>
           <p>{JSON.stringify(welcomerParams)}</p>
           <p>{JSON.stringify(guild)}</p>
+          <p>{JSON.stringify(channels)}</p>
         </div>
       ) : (
         <div>

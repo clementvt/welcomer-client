@@ -5,6 +5,7 @@ import { APIGuildExtended } from "@/types";
 
 import "server-only";
 
+
 export async function getUserData(): Promise<APIUser | null> {
   try {
     const user = await getUser();
@@ -71,6 +72,29 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
   } catch (error) {
     console.log("Failed to fetch guilds", error);
 
+    return null;
+  }
+}
+
+export async function getGuildChannels(
+  guildId: string,
+): Promise<APIGuild | null> {
+  try {
+
+    const response = await fetch(
+      `https://discord.com/api/guilds/${guildId}/channels`,
+      {
+        headers: {
+          Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
+        },
+        next: {
+          revalidate: 20,
+        },
+      },
+    );
+
+    return response.json();
+  } catch (error) {
     return null;
   }
 }
