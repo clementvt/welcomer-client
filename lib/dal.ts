@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Guild } from "@prisma/client";
+import { Guild, Leaver, Welcomer } from "@prisma/client";
 import { APIGuild } from "discord-api-types/v10";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -52,7 +52,7 @@ export const getUser = cache(async () => {
   }
 });
 
-export async function getBotGuild(id: string): Promise<Guild | null> {
+export async function getBotGuildDb(id: string): Promise<Guild | null> {
   try {
     const guild = await prisma.guild.findUnique({
       where: { id: id },
@@ -91,36 +91,107 @@ export async function getGuild(id: string): Promise<APIGuild | null> {
   }
 }
 
-export async function getWelcomer(id: string) {
-  if (!(await userCanAccesssGuild(id))) {
-    return null;
-  }
+export async function getWelcomer(guildId: string): Promise<Welcomer | null> {
+  if (!userCanAccesssGuild(guildId)) return null;
   try {
-    const welcomeParams = await prisma.welcomer.findUnique({
-      where: { id: id },
+    const res = await prisma.welcomer.findUnique({
+      where: { guildId },
     });
 
-    return welcomeParams;
+    return res;
   } catch (error) {
-    console.log("Failed to fetch welcome params");
-
-    return null;
+    throw new Error("Failed to get welcomer");
   }
 }
 
-export async function getGoodbye(id: string) {
-  if (!(await userCanAccesssGuild(id))) {
-    return null;
-  }
+export async function updateWelcomer(
+  guildId: string,
+  data: Partial<Welcomer>,
+): Promise<Welcomer | null> {
+  if (!userCanAccesssGuild(guildId)) return null;
   try {
-    const leaveParams = await prisma.leaver.findUnique({
-      where: { id: id },
+    const res = await prisma.welcomer.update({
+      where: { guildId },
+      data,
     });
 
-    return leaveParams;
+    return res;
   } catch (error) {
-    console.log("Failed to fetch leave params");
+    throw new Error("Failed to update welcomer");
+  }
+}
 
-    return null;
+export async function deleteWelcomer(
+  guildId: string,
+): Promise<Welcomer | null> {
+  if (!userCanAccesssGuild(guildId)) return null;
+  try {
+    let guild = await prisma.welcomer.delete({
+      where: { guildId },
+    });
+
+    return guild;
+  } catch (error) {
+    throw new Error("Failed to delete welcomer");
+  }
+}
+
+export async function createLeaver(guildId: string): Promise<Welcomer | null> {
+  if (!userCanAccesssGuild(guildId)) return null;
+  try {
+    const res = await prisma.leaver.create({
+      data: {
+        guildId: guildId,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    throw new Error("Failed to create leaver");
+  }
+}
+
+export async function getLeaver(guildId: string): Promise<Leaver | null> {
+  if (!userCanAccesssGuild(guildId)) return null;
+
+  try {
+    const res = await prisma.leaver.findUnique({
+      where: { guildId },
+    });
+
+    return res;
+  } catch (error) {
+    throw new Error("Failed to get leaver");
+  }
+}
+
+export async function updateLeaver(
+  guildId: string,
+  data: Partial<Leaver>,
+): Promise<Welcomer | null> {
+  if (!userCanAccesssGuild(guildId)) return null;
+  try {
+    const res = await prisma.leaver.update({
+      where: { guildId },
+      data,
+    });
+
+    return res;
+  } catch (error) {
+    throw new Error("Failed to update leaver");
+  }
+}
+
+export async function deleteLeaver(guildId: string): Promise<Leaver | null> {
+  try {
+    if (!userCanAccesssGuild(guildId)) return null;
+
+    let guild = await prisma.leaver.delete({
+      where: { guildId },
+    });
+
+    return guild;
+  } catch (error) {
+    throw new Error("Failed to delete leaver");
   }
 }

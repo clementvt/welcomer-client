@@ -1,6 +1,6 @@
 import { APIGuild, APIUser } from "discord-api-types/v10";
 
-import { getBotGuild, getUser } from "@/lib/dal";
+import { getBotGuildDb, getUser } from "@/lib/dal";
 import { APIGuildExtended } from "@/types";
 
 import "server-only";
@@ -57,7 +57,7 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
 
     const guilds: APIGuildExtended[] = await Promise.all(
       userGuilds.map(async (guild: APIGuildExtended) => {
-        const botGuild = await getBotGuild(guild.id);
+        const botGuild = await getBotGuildDb(guild.id);
 
         if (botGuild) {
           guild.mutual = true;
