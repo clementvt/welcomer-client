@@ -5,17 +5,18 @@ import { Button } from "@nextui-org/button";
 import { LogoutIcon } from "@/components/icons";
 import { signOut } from "@/lib/actions";
 
-export function LogoutButton() {
+export function LogoutButton({ textHidden }: { textHidden?: boolean }) {
   return (
     <form action={signOut}>
       <Button
-        className="w-full justify-start"
+        className="w-full"
         color="danger"
-        startContent={<LogoutIcon />}
+        isIconOnly={textHidden}
+        startContent={!textHidden ? <LogoutIcon /> : undefined}
         type="submit"
         variant="ghost"
       >
-        Logout
+        {textHidden ? <LogoutIcon /> : "Logout"}
       </Button>
     </form>
   );

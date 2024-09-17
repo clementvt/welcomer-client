@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { SideBar } from "@/components/dashboard/guild/sideBar";
+import { Sidebar } from "@/components/dashboard/guild/sideBar";
 import { getGuild } from "@/lib/dal";
-import { getGuilds } from "@/lib/dto";
+import { getGuilds, getUserData } from "@/lib/dto";
 
 export default async function Layout({
   children,
@@ -17,13 +17,12 @@ export default async function Layout({
 
   if (!guild) redirect("/dashboard");
   const otherGuilds = (await getGuilds())?.filter((g) => g.id !== guild.id);
+  const user = await getUserData();
 
   return (
-    <div className="flex flex-row h-screen relative">
-      <SideBar currentGuild={guild} guilds={otherGuilds} />
-      <main className="container mx-auto ml-64 pt-16 px-6 flex-grow">
-        {children}
-      </main>
+    <div className="flex flex-row h-screen overflow-hidden">
+      <Sidebar currentGuild={guild} guilds={otherGuilds} user={user!} />
+      <main className="overflow-auto">{children}</main>
     </div>
   );
 }
