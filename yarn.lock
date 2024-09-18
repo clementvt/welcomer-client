@@ -277,6 +277,23 @@
     "@react-types/button" "3.9.4"
     "@react-types/shared" "3.23.1"
 
+"@nextui-org/button@2.0.38":
+  version "2.0.38"
+  resolved "https://registry.yarnpkg.com/@nextui-org/button/-/button-2.0.38.tgz#2756bb1d245e53bc3836d3bff3ffc6f0f03d52ac"
+  integrity sha512-XbgyqBv+X7QirXeriGwkqkMOENpAxXRo+jzfMyBMvfsM3kwrFj92OSF1F7/dWDvcW7imVZB9o2Ci7LIppq9ZZQ==
+  dependencies:
+    "@nextui-org/react-utils" "2.0.17"
+    "@nextui-org/ripple" "2.0.33"
+    "@nextui-org/shared-utils" "2.0.8"
+    "@nextui-org/spinner" "2.0.34"
+    "@nextui-org/use-aria-button" "2.0.10"
+    "@react-aria/button" "3.9.5"
+    "@react-aria/focus" "3.17.1"
+    "@react-aria/interactions" "3.21.3"
+    "@react-aria/utils" "3.24.1"
+    "@react-types/button" "3.9.4"
+    "@react-types/shared" "3.23.1"
+
 "@nextui-org/card@^2.0.33":
   version "2.0.33"
   resolved "https://registry.yarnpkg.com/@nextui-org/card/-/card-2.0.33.tgz#30b5bd443c2294ad61c5cbd16a2c93c06ca72d29"
@@ -509,6 +526,14 @@
     "@nextui-org/react-utils" "2.0.16"
     "@nextui-org/shared-utils" "2.0.7"
 
+"@nextui-org/ripple@2.0.33":
+  version "2.0.33"
+  resolved "https://registry.yarnpkg.com/@nextui-org/ripple/-/ripple-2.0.33.tgz#b50e3d026566e30b5bbbee669985cbc38544a27a"
+  integrity sha512-Zsa60CXtGCF7weTCFbSfT0OlxlGHdd5b/sSJTYrmMZRHOIUpHW8kT0bxVYF/6X8nCCJYxzBKXUqdE3Y31fhNeQ==
+  dependencies:
+    "@nextui-org/react-utils" "2.0.17"
+    "@nextui-org/shared-utils" "2.0.8"
+
 "@nextui-org/shared-icons@2.0.9":
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/@nextui-org/shared-icons/-/shared-icons-2.0.9.tgz#ecc674ec51ba7f0570ee821aed317fba4cc70376"
@@ -554,6 +579,15 @@
     "@nextui-org/react-utils" "2.0.16"
     "@nextui-org/shared-utils" "2.0.7"
     "@nextui-org/system-rsc" "2.1.5"
+
+"@nextui-org/spinner@2.0.34":
+  version "2.0.34"
+  resolved "https://registry.yarnpkg.com/@nextui-org/spinner/-/spinner-2.0.34.tgz#91f1d3db33fa4ceedbd88e00e7b1a10c7833c9b5"
+  integrity sha512-YKw/6xSLhsXU1k22OvYKyWhtJCHzW2bRAiieVSVG5xak3gYwknTds5H9s5uur+oAZVK9AkyAObD19QuZND32Jg==
+  dependencies:
+    "@nextui-org/react-utils" "2.0.17"
+    "@nextui-org/shared-utils" "2.0.8"
+    "@nextui-org/system-rsc" "2.1.6"
 
 "@nextui-org/switch@2.0.33":
   version "2.0.33"
