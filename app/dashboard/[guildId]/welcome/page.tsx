@@ -12,7 +12,7 @@ export default async function Page({
 
   return (
     <>
-      {welcomerParams ? (
+      {/* {welcomerParams ? (
         <div>
           <h1>Welcome to {welcomerParams.guildId}</h1>
           <p>{JSON.stringify(welcomerParams)}</p>
@@ -25,7 +25,7 @@ export default async function Page({
           <p>Welcomer is not enabled for this guild.</p>
           <CreateWelcomerButton guildId={params.guildId} />
         </div>
-      )}
+      )} */}
     </>
   );
 }
