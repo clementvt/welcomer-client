@@ -292,14 +292,14 @@
     "@react-aria/utils" "3.24.1"
     "@react-types/shared" "3.23.1"
 
-"@nextui-org/code@2.0.32":
-  version "2.0.32"
-  resolved "https://registry.yarnpkg.com/@nextui-org/code/-/code-2.0.32.tgz#660edb065af3329a184b7e1d3eb3e580c5b76887"
-  integrity sha512-YBLCWDgR+ebWIr+noN02/ls+PsQV9leLskgPLFUfpRzHoXdGeUUhE8IjTv14KFP3XlW3Cf9ALFy3IgPuIZ+yuQ==
+"@nextui-org/code@2.0.33":
+  version "2.0.33"
+  resolved "https://registry.yarnpkg.com/@nextui-org/code/-/code-2.0.33.tgz#04ba9280e08505c6c4a57cac029f6db1411cac55"
+  integrity sha512-G2254ov2rsPxFEoJ0UHVHe+rSmNYwoHZc7STAtiTsJ2HfebZPQbNnfuCifMIpa+kgvHrMBGb85eGk0gy1R+ArA==
   dependencies:
-    "@nextui-org/react-utils" "2.0.16"
-    "@nextui-org/shared-utils" "2.0.7"
-    "@nextui-org/system-rsc" "2.1.5"
+    "@nextui-org/react-utils" "2.0.17"
+    "@nextui-org/shared-utils" "2.0.8"
+    "@nextui-org/system-rsc" "2.1.6"
 
 "@nextui-org/divider@2.0.31":
   version "2.0.31"
