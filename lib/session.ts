@@ -1,3 +1,4 @@
+import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
@@ -5,7 +6,6 @@ import prisma from "./prisma";
 
 import { SessionPayload } from "@/types";
 
-import "server-only";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);

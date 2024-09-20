@@ -11,7 +11,6 @@ export function LogoutButton() {
       <Button
         className="w-full transition-all"
         color="danger"
-
         startContent={<LogoutIcon />}
         type="submit"
         variant="ghost"

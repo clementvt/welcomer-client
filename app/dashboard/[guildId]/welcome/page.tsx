@@ -1,4 +1,3 @@
-import CreateWelcomerButton from "@/components/dashboard/guild/createWelcomerButton";
 import { getGuild, getWelcomer } from "@/lib/dal";
 import { getGuildChannels } from "@/lib/dto";
 export default async function Page({

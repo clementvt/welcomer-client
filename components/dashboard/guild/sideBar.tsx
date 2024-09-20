@@ -3,14 +3,16 @@ import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
 import { User } from "@nextui-org/user";
 import { APIGuild, APIUser } from "discord-api-types/v10";
+import Link from "next/link";
 import { createContext, useContext, useState } from "react";
 import { FaDoorOpen, FaHome } from "react-icons/fa";
 import { ImEnter } from "react-icons/im";
 
+import { LogoutIcon } from "./logoutIcon";
+
 import { Logo } from "@/components/icons";
 import { getUserAvatar } from "@/lib/utils";
 import { APIGuildExtended } from "@/types";
-import { LogoutIcon } from "./logoutIcon";
 
 const SidebarContext = createContext({ isOpen: true });
 
@@ -26,7 +28,7 @@ export function Sidebar({
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <aside className="h-screen">
+    <aside className="h-screen fixed sm:relative">
       <nav className="h-full flex flex-col bg-slate-800 border-r border-slate-700 shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center align-center">
           <div className={` items-center h-10 justify-start flex flex-row `}>
@@ -80,9 +82,22 @@ export function Sidebar({
         <Divider className="mb-2" />
         <SidebarContext.Provider value={{ isOpen }}>
           <ul className="flex-1 px-3">
-            <SidebarItem active icon={<FaHome />} text="Dashboard" />
-            <SidebarItem icon={<ImEnter />} text="Welcomer" />
-            <SidebarItem icon={<FaDoorOpen />} text="Dashboard" />
+            <SidebarItem icon={<FaHome />} link={"/dashboard"} text="Home" />
+            <SidebarItem
+              icon={<FaHome />}
+              link={`/dashboard/${currentGuild.id}`}
+              text="Dashboard"
+            />
+            <SidebarItem
+              icon={<ImEnter />}
+              link={`/dashboard/${currentGuild.id}/welcome`}
+              text="Welcomer"
+            />
+            <SidebarItem
+              icon={<FaDoorOpen />}
+              link={`/dashboard/${currentGuild.id}/leave`}
+              text="Dashboard"
+            />
           </ul>
         </SidebarContext.Provider>
         <Divider />
@@ -110,37 +125,41 @@ export function Sidebar({
 export function SidebarItem({
   icon,
   text,
+  link,
   active,
 }: {
   icon: React.ReactNode;
   text: string;
+  link: string;
   active?: boolean;
 }) {
   const { isOpen } = useContext(SidebarContext);
 
   return (
-    <li
-      className={`  relative flex items-center justify-center py-2 px-3 my-1
+    <Link href={link}>
+      <li
+        className={`relative flex items-center justify-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
-        transition-colors group
+        transition-colors group 
         ${active ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800" : "hover:bg-indigo-50 text-gray-600"}`}
-    >
-      {icon}
-      <span
-        className={`overflow-hidden transition-all ${
-          isOpen ? "w-48 ml-3" : "w-0"
-        }`}
       >
-        {text}
-      </span>
-
-      {!isOpen && (
-        <div
-          className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+        {icon}
+        <span
+          className={`overflow-hidden transition-all ${
+            isOpen ? "w-48 ml-3" : "w-0"
+          }`}
         >
           {text}
-        </div>
-      )}
-    </li>
+        </span>
+
+        {!isOpen && (
+          <div
+            className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+          >
+            {text}
+          </div>
+        )}
+      </li>
+    </Link>
   );
 }
