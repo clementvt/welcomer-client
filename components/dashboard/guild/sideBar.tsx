@@ -84,7 +84,7 @@ export function Sidebar({
         </div>
         <Divider className="mb-2" />
 
-        <GuildSelectDropdown currentGuild={currentGuild} guilds={guilds} />
+        <GuildSelectDropdown currentGuild={currentGuild} guilds={guilds} isOpen={isOpen} />
         <Divider className="my-2" />
 
         <SidebarContext.Provider value={{ isOpen }}>

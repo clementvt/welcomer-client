@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
 import {
   Dropdown,
   DropdownItem,
@@ -17,9 +16,11 @@ import { APIGuildExtended } from "@/types";
 export function GuildSelectDropdown({
   guilds,
   currentGuild,
+  isOpen,
 }: {
   guilds: APIGuildExtended[];
   currentGuild: APIGuild;
+  isOpen: boolean;
 }) {
   return (
     <Dropdown
@@ -33,7 +34,7 @@ export function GuildSelectDropdown({
     >
       <DropdownTrigger>
         <button className="m-2">
-          <GuildCard guild={currentGuild} />
+          <GuildCard guild={currentGuild} isOpen={isOpen} />
         </button>
       </DropdownTrigger>
       <DropdownMenu
