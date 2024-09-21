@@ -13,3 +13,9 @@ export function getUserAvatar(user: APIUser) {
     ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
     : `https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator) % 5}.png`;
 }
+
+export function getGuildBanner(guild: APIGuildExtended) {
+  return guild.banner
+    ? `https://cdn.discordapp.com/banners/${guild.id}/${guild.banner}.png`
+    : getGuildIcon(guild);
+}

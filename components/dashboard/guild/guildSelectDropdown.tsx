@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@nextui-org/button";
 import {
   Dropdown,
   DropdownItem,
@@ -11,11 +12,13 @@ import NextLink from "next/link";
 
 import GuildCard from "./guildCard";
 
+import { APIGuildExtended } from "@/types";
+
 export function GuildSelectDropdown({
   guilds,
   currentGuild,
 }: {
-  guilds: APIGuild[];
+  guilds: APIGuildExtended[];
   currentGuild: APIGuild;
 }) {
   return (
@@ -29,7 +32,7 @@ export function GuildSelectDropdown({
       placement="bottom-start"
     >
       <DropdownTrigger>
-        <button className="w-full">
+        <button className="m-2">
           <GuildCard guild={currentGuild} />
         </button>
       </DropdownTrigger>
@@ -39,7 +42,7 @@ export function GuildSelectDropdown({
         variant="flat"
       >
         {guilds.map((guild) => (
-          <DropdownItem key={guild.id}>
+          <DropdownItem key={guild.id} textValue={guild.id}>
             <NextLink href={`/dashboard/${guild.id}`}>
               <GuildCard guild={guild} />
             </NextLink>

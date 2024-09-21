@@ -1,3 +1,4 @@
+import { Card, CardHeader } from "@nextui-org/card";
 import { redirect } from "next/navigation";
 
 import { getGuild } from "@/lib/dal";
@@ -11,5 +12,11 @@ export default async function Page({
 
   if (!guild) redirect("/dashboard");
 
-  return <>{JSON.stringify(guild)}</>;
+  return (
+    <>
+      <Card>
+        <CardHeader>{guild.name}</CardHeader>
+      </Card>
+    </>
+  );
 }

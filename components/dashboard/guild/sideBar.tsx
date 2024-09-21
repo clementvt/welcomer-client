@@ -8,6 +8,7 @@ import { createContext, useContext, useState } from "react";
 import { FaDoorOpen, FaHome } from "react-icons/fa";
 import { ImEnter } from "react-icons/im";
 
+import { GuildSelectDropdown } from "./guildSelectDropdown";
 import { LogoutIcon } from "./logoutIcon";
 
 import { Logo } from "@/components/icons";
@@ -22,7 +23,7 @@ export function Sidebar({
   user,
 }: {
   currentGuild: APIGuild;
-  guilds: APIGuildExtended[] | undefined;
+  guilds: APIGuildExtended[];
   user: APIUser;
 }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -43,10 +44,12 @@ export function Sidebar({
                 isOpen ? "w-20 opacity-100" : "w-0 opacity-0"
               } `}
             >
-              <div className={`flex flex-col leading-3 text-center `}>
-                <h1>Welcomer</h1>
-                <span className="text-small text-gray-500 ">Dashboard</span>
-              </div>
+              <Link href="/dashboard">
+                <div className={`flex flex-col leading-3 text-center `}>
+                  <h1>Welcomer</h1>
+                  <span className="text-small text-gray-500 ">Dashboard</span>
+                </div>
+              </Link>
             </div>
           </div>
           <Button
@@ -80,10 +83,15 @@ export function Sidebar({
           </Button>
         </div>
         <Divider className="mb-2" />
+
+        <GuildSelectDropdown currentGuild={currentGuild} guilds={guilds} />
+        <Divider className="my-2" />
+
         <SidebarContext.Provider value={{ isOpen }}>
           <ul className="flex-1 px-3">
             <SidebarItem icon={<FaHome />} link={"/dashboard"} text="Home" />
             <SidebarItem
+              active
               icon={<FaHome />}
               link={`/dashboard/${currentGuild.id}`}
               text="Dashboard"
@@ -140,8 +148,8 @@ export function SidebarItem({
       <li
         className={`relative flex items-center justify-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
-        transition-colors group 
-        ${active ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800" : "hover:bg-indigo-50 text-gray-600"}`}
+        transition-colors group hover:text-indigo-800
+        ${active ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800" : "hover:bg-indigo-50 text-white-600"}`}
       >
         {icon}
         <span

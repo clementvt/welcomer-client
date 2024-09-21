@@ -5,7 +5,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 
 import { getGuilds } from "@/lib/dto";
-import { getGuildIcon } from "@/lib/utils";
+import { getGuildBanner, getGuildIcon } from "@/lib/utils";
 
 export default async function Page() {
   const guilds = await getGuilds();
@@ -31,7 +31,7 @@ export default async function Page() {
             <div
               className="image-blured"
               style={{
-                backgroundImage: `url(${getGuildIcon(guild)})`,
+                backgroundImage: `url(${getGuildBanner(guild)})`,
                 filter: "blur(10px)",
                 height: "120px",
                 backgroundSize: "cover",
