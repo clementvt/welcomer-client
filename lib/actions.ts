@@ -50,6 +50,28 @@ export async function createWelcomer(
 
     return res;
   } catch (error) {
+    console.error(error);
     throw new Error("Failed to create welcomer");
+  }
+}
+
+export async function removeWelcomer(
+  guildId: string,
+): Promise<Welcomer | null> {
+  try {
+    if (!userCanAccesssGuild(guildId)) return null;
+
+    const res = await prisma.welcomer.delete({
+      where: {
+        guildId: guildId,
+      },
+    });
+
+    revalidatePath(`/app/dashboard/${guildId}/welcome`);
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to delete welcomer");
   }
 }
