@@ -23,7 +23,7 @@ export default async function Layout({
   return (
     <div className="flex flex-row h-screen overflow-hidden">
       <Sidebar currentGuild={guild} guilds={otherGuilds} user={user!} />
-      <main className="container mx-auto overflow-auto flex-grow ml-[72px] sm:ml-0 pt-16 px-6">
+      <main className="flex justify-center h-fitcontainer mx-auto overflow-auto flex-grow ml-[72px] sm:ml-0 pt-16 px-6">
         {children}
       </main>
     </div>

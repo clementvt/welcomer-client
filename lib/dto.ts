@@ -1,4 +1,9 @@
-import { APIGuild, APIUser } from "discord-api-types/v10";
+import {
+  APIChannel,
+  APIGuild,
+  APIGuildChannel,
+  APIUser
+} from "discord-api-types/v10";
 import { cache } from "react";
 
 import { getBotGuildDb, getUser } from "@/lib/dal";
@@ -78,7 +83,7 @@ export async function getGuilds(): Promise<APIGuildExtended[] | null> {
 
 export async function getGuildChannels(
   guildId: string,
-): Promise<APIGuild | null> {
+): Promise<APIChannel[] | null> {
   try {
     const response = await fetch(
       `https://discord.com/api/guilds/${guildId}/channels`,
