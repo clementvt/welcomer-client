@@ -29,7 +29,7 @@ export default async function Page({
   );
 
   return (
-    <Card className="w-5/6">
+    <Card className="w-full lg:w-5/6">
       <WelcomeCardHeader />
       {welcomerParams ? (
         <>

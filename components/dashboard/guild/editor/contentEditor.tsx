@@ -12,7 +12,7 @@ export default function ContentEditor({
 
   return (
     <Textarea
-      label={"Content " + (value ? `( ${value.length}/2000 )` : "")}
+      label={"Content " + `( ${value?.length ?? 0}/2000 )`}
       placeholder="Welcome {user} to {guild}!"
       validate={(value) => {
         if (value.length > 2000)
@@ -21,5 +21,6 @@ export default function ContentEditor({
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
+
   );
 }

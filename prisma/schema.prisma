@@ -40,7 +40,7 @@ model Leaver {
   channelId String?
   content   String?
   embeds Embed[]
-    createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
@@ -65,16 +65,16 @@ model Embed {
   author EmbedAuthor?
   image EmbedImage?
   thumbnail EmbedThumbnail?
-    createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // relations
-  welcomerId Int @unique
-  welcomer Welcomer @relation(fields: [welcomerId], references: [id])
-  leaverId Int @unique
-  leaver Leaver @relation(fields: [leaverId], references: [id])
-  DMId Int @unique
-  DM DM @relation(fields: [DMId], references: [id])
+  welcomerId Int? @unique
+  welcomer Welcomer? @relation(fields: [welcomerId], references: [id])
+  leaverId Int? @unique
+  leaver Leaver? @relation(fields: [leaverId], references: [id])
+  DMId Int? @unique
+  DM DM? @relation(fields: [DMId], references: [id])
 }
 
 model EmbedThumbnail {
