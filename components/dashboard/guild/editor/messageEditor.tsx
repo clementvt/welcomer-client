@@ -1,7 +1,7 @@
 import { Leaver, Welcomer } from "@prisma/client";
 
 import ChannelSelector from "./channelSelector";
-
+import ContentEditor from "./contentEditor";
 import { getGuildChannels } from "@/lib/dto";
 export async function MessageEditor({ module }: { module: Welcomer | Leaver }) {
   const channels = await getGuildChannels(module.guildId);
@@ -10,6 +10,7 @@ export async function MessageEditor({ module }: { module: Welcomer | Leaver }) {
     <div className="w-1/2 container px-4">
       <div className="flex flex-col space-y-4">
         <ChannelSelector channels={channels!} />
+        <ContentEditor content={module.content ?? undefined} />
       </div>
     </div>
   );
