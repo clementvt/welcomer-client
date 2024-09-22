@@ -1,6 +1,6 @@
 "use client";
 
-import { createEmbed } from "@/lib/actions";
+import { createEmbed, removeEmbeds } from "@/lib/actions";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import { Button } from "@nextui-org/button";
 import { Embed } from "@prisma/client";
@@ -29,6 +29,7 @@ export default function EmbedMenuAccordion({ embeds, moduleId }: { embeds: Embed
             color="danger"
             isDisabled={embeds.length == 0}
             variant="ghost"
+            onClick={() => removeEmbeds(moduleId)}
           >
             Clear Embeds
           </Button>

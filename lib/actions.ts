@@ -91,3 +91,18 @@ export async function createEmbed(welcomerId: number): Promise<Embed | null> {
     throw new Error("Failed to create embed");
   }
 }
+
+export async function removeEmbeds(welcomerId: number): Promise<void> {
+  try {
+    await prisma.embed.deleteMany({
+      where: {
+        welcomerId: welcomerId,
+      },
+    });
+
+    revalidatePath(`/app/dashboard/${welcomerId}/welcome`);
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to delete embeds");
+  }
+}
