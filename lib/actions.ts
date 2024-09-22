@@ -1,6 +1,6 @@
 "use server";
 
-import { Guild, Welcomer } from "@prisma/client";
+import { Guild, Welcomer, Embed } from "@prisma/client";
 import { APIGuild } from "discord-api-types/v10";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -73,5 +73,21 @@ export async function removeWelcomer(
   } catch (error) {
     console.error(error);
     throw new Error("Failed to delete welcomer");
+  }
+}
+export async function createEmbed(welcomerId: number): Promise<Embed | null> {
+  try {
+    const res = await prisma.embed.create({
+      data: {
+        welcomerId: welcomerId,
+      },
+    });
+
+    revalidatePath(`/app/dashboard/${welcomerId}/welcome`);
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to create embed");
   }
 }

@@ -69,11 +69,11 @@ model Embed {
   updatedAt DateTime @updatedAt
 
   // relations
-  welcomerId Int? @unique
+  welcomerId Int?
   welcomer Welcomer? @relation(fields: [welcomerId], references: [id])
-  leaverId Int? @unique
+  leaverId Int?
   leaver Leaver? @relation(fields: [leaverId], references: [id])
-  DMId Int? @unique
+  DMId Int?
   DM DM? @relation(fields: [DMId], references: [id])
 }
 
@@ -84,7 +84,7 @@ model EmbedThumbnail {
   url       String
   width Int?
   heigth Int?
-    createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 

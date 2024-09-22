@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Guild, Leaver, Welcomer, Embed } from "@prisma/client";
+import { Embed, Guild, Leaver, Welcomer } from "@prisma/client";
 import { APIGuild } from "discord-api-types/v10";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -196,14 +196,15 @@ export async function deleteLeaver(guildId: string): Promise<Leaver | null> {
   }
 }
 
-
 export async function getModuleEmbeds(
   module: Welcomer | Leaver,
 ): Promise<Embed[] | null> {
-
   try {
     const res = await prisma.embed.findMany({
-      where: { welcomerId: module.id, leaverId: module.id },
+      //  where the welcomerId is equal to the module id or the leaverId is equal to the module id
+      where: {
+        OR: [{ welcomerId: module.id }, { leaverId: module.id }],
+      },
     });
 
     return res;
