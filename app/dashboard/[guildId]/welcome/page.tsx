@@ -24,7 +24,7 @@ export default async function Page({
         <RemoveWelcomerButton guildId={params.guildId} />
       ) : (
         <CreateWelcomerButton guildId={params.guildId} />
-      )}  
+      )}
     </CardHeader>
   );
 

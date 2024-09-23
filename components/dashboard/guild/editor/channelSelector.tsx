@@ -5,7 +5,7 @@ import { APIChannel } from "discord-api-types/v10";
 export default function ChannelSelector({
   channels,
 }: {
-  channels: APIChannel[];
+  channels: APIChannel[] | null;
 }) {
   return (
     <Select label="Channel" placeholder="Select a channel">

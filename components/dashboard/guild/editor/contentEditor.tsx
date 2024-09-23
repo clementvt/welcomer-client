@@ -21,6 +21,5 @@ export default function ContentEditor({
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
-
   );
 }

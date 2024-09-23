@@ -1,12 +1,13 @@
-import {
-  APIChannel,
-  APIGuild,
-  APIGuildChannel,
-  APIUser
-} from "discord-api-types/v10";
-import { cache } from "react";
+import { APIChannel, APIGuild, APIUser } from "discord-api-types/v10";
 
-import { getBotGuildDb, getUser } from "@/lib/dal";
+import {
+  fectchUserData,
+  fetchGuildChannels,
+  fetchUserGuilds,
+  getBotGuildDb,
+  getUser,
+  userCanAccesssGuild,
+} from "@/lib/dal";
 import { APIGuildExtended } from "@/types";
 
 import "server-only";
@@ -15,51 +16,40 @@ export async function getUserData(): Promise<APIUser | null> {
   try {
     const user = await getUser();
 
-    if (!user) return null;
+    if (!user || !user.accessToken) return null;
 
-    const response = await fetch("https://discord.com/api/users/@me", {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-      next: {
-        revalidate: 20,
-      },
-    });
+    const userData = await fectchUserData(user.accessToken);
 
-    return response.json();
+    return userData;
   } catch (error) {
     return null;
   }
 }
 
-export const getUserGuilds = cache(async (): Promise<APIGuild[] | null> => {
+export async function getUserGuilds(): Promise<APIGuild[] | null> {
   try {
     const user = await getUser();
 
-    if (!user) return null;
+    if (!user || !user.accessToken) return null;
 
-    const response = await fetch("https://discord.com/api/users/@me/guilds", {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-      next: {
-        revalidate: 20,
-      },
-    });
+    const userGuilds = await fetchUserGuilds(user.accessToken);
 
-    return response.json();
+    return userGuilds;
   } catch (error) {
+    console.log(error);
+
     return null;
   }
-});
+}
 
 export async function getGuilds(): Promise<APIGuildExtended[] | null> {
   try {
-    let userGuilds = (await getUserGuilds())?.filter(
-      ({ permissions }) => (parseInt(permissions ?? "") & 0x8) === 0x8,
-    );
+    let userGuilds = await getUserGuilds();
 
     if (!userGuilds) return null;
+    userGuilds = userGuilds.filter(
+      ({ permissions }) => (parseInt(permissions ?? "") & 0x8) === 0x8,
+    );
 
     const guilds: APIGuildExtended[] = await Promise.all(
       userGuilds.map(async (guild: APIGuildExtended) => {
@@ -85,21 +75,10 @@ export async function getGuildChannels(
   guildId: string,
 ): Promise<APIChannel[] | null> {
   try {
-    const response = await fetch(
-      `https://discord.com/api/guilds/${guildId}/channels`,
-      {
-        headers: {
-          Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
-        },
-        next: {
-          revalidate: 20,
-        },
-      },
-    );
-
-    return response.json();
+    if(!userCanAccesssGuild(guildId)) return null;
+    const guildChannels = await fetchGuildChannels(guildId);
+    return guildChannels;
   } catch (error) {
     return null;
   }
 }
-

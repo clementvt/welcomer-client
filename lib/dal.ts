@@ -1,30 +1,38 @@
 import "server-only";
 
 import { Embed, Guild, Leaver, Welcomer } from "@prisma/client";
-import { APIGuild } from "discord-api-types/v10";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { APIChannel, APIGuild, APIUser } from "discord-api-types/v10";
 import { cache } from "react";
 
 import { getUserGuilds } from "./dto";
 import prisma from "./prisma";
 
-import { decrypt } from "@/lib/session";
+import { decrypt, getSession, getUserSession } from "@/lib/session";
 
 export const verifySession = cache(async () => {
-  const cookie = cookies().get("session")?.value;
-  const session = await decrypt(cookie);
+  const session = getSession();
+  const clientSession = await decrypt(session);
 
-  if (!session?.userId) {
-    redirect("/api/auth/login");
-  }
+  if (!clientSession || !clientSession.sessionId) return null;
 
-  return { isAuth: true, userId: session.userId };
+  const userSession = await getUserSession(clientSession.sessionId as string);
+
+  if (!userSession) return null;
+
+  return { isAuth: true, userId: userSession.userId };
 });
 
-export async function userCanAccesssGuild(guildId: string): Promise<boolean> {
-  return (await getUserGuilds())?.find((guild) => guild.id === guildId) != null;
-}
+export const userCanAccesssGuild = cache(
+  async (guildId: string): Promise<boolean> => {
+    const userGuilds = await getUserGuilds();
+
+    // console.log(userGuilds);
+    return (
+      userGuilds != null &&
+      userGuilds.find((guild) => guild.id === guildId) != null
+    );
+  },
+);
 
 export const getUser = cache(async () => {
   const session = await verifySession();
@@ -32,18 +40,8 @@ export const getUser = cache(async () => {
   if (!session) return null;
 
   try {
-    const userId = await prisma.session.findUnique({
-      where: { id: session.userId.toString() },
-      //   returns only the name and email fields
-      select: {
-        userId: true,
-      },
-    });
-
-    if (!userId) return null;
-
     const user = await prisma.user.findUnique({
-      where: { id: userId.userId },
+      where: { id: session.userId },
     });
 
     return user;
@@ -200,6 +198,7 @@ export async function getModuleEmbeds(
   module: Welcomer | Leaver,
 ): Promise<Embed[] | null> {
   try {
+    if (!userCanAccesssGuild(module.guildId)) return null;
     const res = await prisma.embed.findMany({
       //  where the welcomerId is equal to the module id or the leaverId is equal to the module id
       where: {
@@ -210,5 +209,62 @@ export async function getModuleEmbeds(
     return res;
   } catch (error) {
     throw new Error("Failed to get embeds");
+  }
+}
+
+export async function fectchUserData(
+  accesToken: string,
+): Promise<APIUser | null> {
+  try {
+    const response = await fetch("https://discord.com/api/users/@me", {
+      headers: {
+        Authorization: `Bearer ${accesToken}`,
+      },
+    });
+
+    return response.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function fetchUserGuilds(
+  accesToken: string,
+): Promise<APIGuild[] | null> {
+  try {
+    const response = await fetch("https://discord.com/api/users/@me/guilds", {
+      headers: {
+        Authorization: `Bearer ${accesToken}`,
+      },
+      next: {
+        revalidate: 30,
+      },
+    });
+
+    return response.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function fetchGuildChannels(
+  guildId: string,
+): Promise<APIChannel[] | null> {
+  try {
+    const response = await fetch(
+      `https://discord.com/api/guilds/${guildId}/channels`,
+      {
+        headers: {
+          Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN!}`,
+        },
+        next: {
+          revalidate: 30,
+        },
+      },
+    );
+
+    return response.json();
+  } catch (error) {
+    return null;
   }
 }

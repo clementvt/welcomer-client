@@ -10,7 +10,7 @@ import { getGuildBanner, getGuildIcon } from "@/lib/utils";
 export default async function Page() {
   const guilds = await getGuilds();
 
-  if (guilds?.length === 0) {
+  if (!guilds || guilds?.length === 0) {
     return (
       <div className="flex flex-col items-center h-3/4 justify-center gap-4 py-8 md:py-10">
         <div className="inline-block justify-center text-wrap">

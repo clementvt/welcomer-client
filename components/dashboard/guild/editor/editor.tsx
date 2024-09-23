@@ -6,7 +6,7 @@ import MessagePreview from "./messagePreview";
 export function Editor({ module }: { module: Welcomer | Leaver }) {
   return (
     <div className="flex flex-col lg:flex-row">
-      <MessageEditor module={module}/>
+      <MessageEditor module={module} />
       <MessagePreview />
     </div>
   );

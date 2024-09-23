@@ -1,6 +1,6 @@
 "use server";
 
-import { Guild, Welcomer, Embed } from "@prisma/client";
+import { Embed, Guild, Welcomer } from "@prisma/client";
 import { APIGuild } from "discord-api-types/v10";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -77,6 +77,18 @@ export async function removeWelcomer(
 }
 export async function createEmbed(welcomerId: number): Promise<Embed | null> {
   try {
+    const guild = await prisma.welcomer.findUnique({
+      where: {
+        id: welcomerId,
+      },
+      select: {
+        guildId: true,
+      },
+    });
+    let guildId = guild?.guildId;
+
+    if (!guildId || !(await userCanAccesssGuild(guildId))) return null;
+    console.log("Creating embed", await userCanAccesssGuild(guildId));
     const res = await prisma.embed.create({
       data: {
         welcomerId: welcomerId,
@@ -94,6 +106,17 @@ export async function createEmbed(welcomerId: number): Promise<Embed | null> {
 
 export async function removeEmbeds(welcomerId: number): Promise<void> {
   try {
+    const guild = await prisma.welcomer.findUnique({
+      where: {
+        id: welcomerId,
+      },
+      select: {
+        guildId: true,
+      },
+    });
+    let guildId = guild?.guildId;
+
+    if (!guildId || !(await userCanAccesssGuild(guildId))) return;
     await prisma.embed.deleteMany({
       where: {
         welcomerId: welcomerId,

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
-import { decrypt } from "@/lib/session";
+import { decrypt, getSession } from "@/lib/session";
 
 const protectedRoutes = ["/dashboard"];
 
@@ -9,12 +8,10 @@ export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.includes(path);
 
-  const cookie = cookies().get("session")?.value;
-  const session = await decrypt(cookie);
+  const session = getSession();
+  const sessionData = await decrypt(session);
 
-  if (isProtectedRoute && !session?.userId) {
-    console.log("Redirecting to login");
-
+  if (isProtectedRoute && !sessionData?.sessionId) {
     return NextResponse.redirect(new URL("/api/auth/login", req.nextUrl));
   }
 

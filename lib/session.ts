@@ -6,7 +6,6 @@ import prisma from "./prisma";
 
 import { SessionPayload } from "@/types";
 
-
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
@@ -33,8 +32,10 @@ export async function decrypt(session: string | undefined = "") {
 export async function createSession(id: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-  const data = await prisma.session.create({
-    data: {
+  const data = await prisma.session.upsert({
+    where: { id },
+    update: {},
+    create: {
       userId: id,
       expiresAt,
     },
@@ -42,7 +43,7 @@ export async function createSession(id: string) {
 
   const sessionId = data.id;
 
-  const session = await encrypt({ userId: sessionId, expiresAt });
+  const session = await encrypt({ sessionId: sessionId, expiresAt });
 
   cookies().set("session", session, {
     httpOnly: true,
@@ -90,7 +91,13 @@ export async function deleteSession() {
 
   await prisma.session.delete({
     where: {
-      id: payload.userId as string,
+      id: payload.sessionId as string,
     },
+  });
+}
+
+export async function getUserSession(sessionId: string) {
+  return await prisma.session.findFirst({
+    where: { id: sessionId.toString() },
   });
 }
