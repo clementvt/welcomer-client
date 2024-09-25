@@ -132,17 +132,24 @@ model EmbedFooter {
 }
 
 model User {
-  id           String   @id @default(cuid()) @map("_id")
+  id           String   @id
   name         String?
   avatar       String?
   accessToken  String?
   refreshToken String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  guilds       UserGuild[]
 }
 
-model Session {
-  id        String   @id @default(cuid()) @map("_id")
+model UserGuild {
+  id        String      @id
+  name      String
+  icon      String?
+  banner    String?
+  permissions String?
   userId    String
-  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

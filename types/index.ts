@@ -1,18 +1,14 @@
-import { SVGProps } from "react";
-import { APIGuild } from "discord-api-types/v10";
 import { Guild } from "@prisma/client";
+import { JWTPayload } from "jose";
+import { SVGProps } from "react";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
-export type SessionPayload = {
-  sessionId: string;
+export interface SessionPayload extends JWTPayload {
+  userId: string;
   expiresAt: Date;
-};
-
-export interface APIGuildExtended extends APIGuild {
-  mutual?: boolean;
 }
 
 export interface GuildExtended extends Guild {

@@ -4,7 +4,7 @@ import { Image as UIImage } from "@nextui-org/image";
 import NextImage from "next/image";
 import Link from "next/link";
 
-import { getGuilds } from "@/lib/dto";
+import { getGuilds } from "@/lib/dal";
 import { getGuildBanner, getGuildIcon } from "@/lib/utils";
 
 export default async function Page() {

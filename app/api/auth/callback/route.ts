@@ -1,3 +1,4 @@
+import { RESTGetAPICurrentUserGuildsResult } from "discord-api-types/v10";
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
@@ -80,6 +81,22 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const userGuilds = await fetch("https://discord.com/api/users/@me/guilds", {
+      headers: {
+        authorization: `${tokenData.token_type} ${tokenData.access_token}`,
+      },
+    });
+
+    if (!userGuilds.ok) {
+      return NextResponse.redirect(
+        new URL(
+          "/auth/error?error=guildsDataMissing&error_description=An+error+occured+while+fetching+user+guilds",
+          request.nextUrl,
+        ),
+      );
+    }
+    const guilds: RESTGetAPICurrentUserGuildsResult = await userGuilds.json();
+
     const user = await prisma.user.upsert({
       where: { id: userData.id },
       update: {
@@ -91,15 +108,41 @@ export async function GET(request: NextRequest) {
       create: {
         id: userData.id,
         name: userData.username,
+        avatar: userData.avatar,
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token,
       },
     });
 
+    // add guilds to user
+    await prisma.userGuild.deleteMany({
+      where: {
+        userId: userData.id,
+      },
+    });
+
+    const userGuildsData = guilds.filter((guild) => {
+      return guild.owner || (Number(guild.permissions) & 0x20) === 0x20;
+    });
+
+    for (let i = 0; i < userGuildsData.length; i++) {
+      await prisma.userGuild.create({
+        data: {
+          userId: userData.id,
+          id: userGuildsData[i].id,
+          name: userGuildsData[i].name,
+          icon: userGuildsData[i].icon,
+          permissions: userGuildsData[i].permissions?.toString(),
+        },
+      });
+    }
+
     await createSession(user.id);
 
     return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
-  } catch {
+  } catch (e) {
+    console.log(e);
+
     return NextResponse.redirect(
       new URL(
         "/auth/error?error=authFailed&error_description=An+unknown+error+occured+while+authenticating",

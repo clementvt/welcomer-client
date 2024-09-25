@@ -1,8 +1,6 @@
-import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-
-import prisma from "./prisma";
+import "server-only";
 
 import { SessionPayload } from "@/types";
 
@@ -32,18 +30,7 @@ export async function decrypt(session: string | undefined = "") {
 export async function createSession(id: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-  const data = await prisma.session.upsert({
-    where: { id },
-    update: {},
-    create: {
-      userId: id,
-      expiresAt,
-    },
-  });
-
-  const sessionId = data.id;
-
-  const session = await encrypt({ sessionId: sessionId, expiresAt });
+  const session = await encrypt({ userId: id, expiresAt });
 
   cookies().set("session", session, {
     httpOnly: true,
@@ -80,24 +67,5 @@ export function getSession() {
 }
 
 export async function deleteSession() {
-  const session = getSession();
-
   cookies().delete("session");
-
-  if (!session) return null;
-  const payload = await decrypt(session);
-
-  if (!payload) return null;
-
-  await prisma.session.delete({
-    where: {
-      id: payload.sessionId as string,
-    },
-  });
-}
-
-export async function getUserSession(sessionId: string) {
-  return await prisma.session.findFirst({
-    where: { id: sessionId.toString() },
-  });
 }
