@@ -1,4 +1,4 @@
-import { Guild } from "@prisma/client";
+import { Guild, UserGuild } from "@prisma/client";
 import { JWTPayload } from "jose";
 import { SVGProps } from "react";
 
@@ -11,6 +11,6 @@ export interface SessionPayload extends JWTPayload {
   expiresAt: Date;
 }
 
-export interface GuildExtended extends Guild {
+export interface GuildExtended extends UserGuild {
   mutual?: boolean;
 }

@@ -133,7 +133,8 @@ model EmbedFooter {
 
 model User {
   id           String   @id
-  name         String?
+  username         String?
+  discriminator String?
   avatar       String?
   accessToken  String?
   refreshToken String?
@@ -153,3 +154,4 @@ model UserGuild {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+

@@ -5,7 +5,7 @@ import { APIGuild } from "discord-api-types/v10";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { userCanAccesssGuild } from "./dal";
+import { canUserManageGuild } from "./dal";
 import prisma from "./prisma";
 import { deleteSession } from "./session";
 
@@ -18,13 +18,13 @@ export async function signOut() {
   redirect("/");
 }
 
-export async function createGuild(guild: APIGuild): Promise<Guild> {
+export async function createGuild(guildId: string): Promise<Guild> {
   try {
     const res = await prisma.guild.upsert({
-      where: { id: guild.id },
+      where: { id: guildId },
       update: {},
       create: {
-        id: guild.id,
+        id: guildId,
       },
     });
 
@@ -38,7 +38,7 @@ export async function createWelcomer(
   guildId: string,
 ): Promise<Welcomer | null> {
   try {
-    if (!userCanAccesssGuild(guildId)) return null;
+    if (!canUserManageGuild(guildId)) return null;
 
     const res = await prisma.welcomer.create({
       data: {
@@ -59,7 +59,7 @@ export async function removeWelcomer(
   guildId: string,
 ): Promise<Welcomer | null> {
   try {
-    if (!userCanAccesssGuild(guildId)) return null;
+    if (!canUserManageGuild(guildId)) return null;
 
     const res = await prisma.welcomer.delete({
       where: {
@@ -87,8 +87,8 @@ export async function createEmbed(welcomerId: number): Promise<Embed | null> {
     });
     let guildId = guild?.guildId;
 
-    if (!guildId || !(await userCanAccesssGuild(guildId))) return null;
-    console.log("Creating embed", await userCanAccesssGuild(guildId));
+    if (!guildId || !(await canUserManageGuild(guildId))) return null;
+    console.log("Creating embed", await canUserManageGuild(guildId));
     const res = await prisma.embed.create({
       data: {
         welcomerId: welcomerId,
@@ -116,7 +116,7 @@ export async function removeEmbeds(welcomerId: number): Promise<void> {
     });
     let guildId = guild?.guildId;
 
-    if (!guildId || !(await userCanAccesssGuild(guildId))) return;
+    if (!guildId || !(await canUserManageGuild(guildId))) return;
     await prisma.embed.deleteMany({
       where: {
         welcomerId: welcomerId,

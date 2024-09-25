@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
-import { User } from "@nextui-org/user";
-import { APIGuild, APIUser } from "discord-api-types/v10";
+import { User as UIUser } from "@nextui-org/user";
+import { User, UserGuild } from "@prisma/client";
 import Link from "next/link";
 import { createContext, useContext, useState } from "react";
 import { FaDoorOpen, FaHome } from "react-icons/fa";
@@ -13,7 +13,6 @@ import { LogoutIcon } from "./logoutIcon";
 
 import { Logo } from "@/components/icons";
 import { getUserAvatar } from "@/lib/utils";
-import { APIGuildExtended } from "@/types";
 
 const SidebarContext = createContext({ isOpen: true });
 
@@ -22,9 +21,9 @@ export function Sidebar({
   guilds,
   user,
 }: {
-  currentGuild: APIGuild;
-  guilds: APIGuildExtended[];
-  user: APIUser;
+  currentGuild: UserGuild;
+  guilds: UserGuild[];
+  user: User;
 }) {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -120,7 +119,7 @@ export function Sidebar({
               overflow-hidden transition-all ${isOpen ? "w-48 ml-3" : "w-0"}
           `}
           >
-            <User
+            <UIUser
               avatarProps={{
                 src: getUserAvatar(user),
               }}

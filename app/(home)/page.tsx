@@ -1,7 +1,7 @@
-import { getUserData } from "@/lib/dto";
+import { getUser } from "@/lib/dal";
 
 export default async function Home() {
-  const user = await getUserData();
+  const user = await getUser();
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">

@@ -1,5 +1,5 @@
 import { Card, CardBody } from "@nextui-org/card";
-import { APIGuild } from "discord-api-types/v10";
+import { Guild, UserGuild } from "@prisma/client";
 import Image from "next/image";
 
 import { getGuildIcon } from "@/lib/utils";
@@ -8,7 +8,7 @@ export default function GuildCard({
   guild,
   isOpen = true,
 }: {
-  guild: APIGuild;
+  guild: UserGuild;
   isOpen?: boolean;
 }) {
   return (

@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { Sidebar } from "@/components/dashboard/guild/sideBar";
-import { getGuild } from "@/lib/dal";
-import { getGuilds, getUserData } from "@/lib/dto";
+import { getUserGuild, getUserGuilds, getUserData } from "@/lib/dal";
 
 export default async function Layout({
   children,
@@ -13,11 +12,11 @@ export default async function Layout({
     guildId: string;
   };
 }) {
-  const guild = await getGuild(params.guildId);
+  const guild = await getUserGuild(params.guildId);
 
   if (!guild) redirect("/dashboard");
   const otherGuilds =
-    (await getGuilds())?.filter((g) => g.id !== guild.id) ?? [];
+    (await getUserGuilds())?.filter((g) => g.id !== guild.id) ?? [];
   const user = await getUserData();
 
   return (

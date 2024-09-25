@@ -1,8 +1,12 @@
-import { RESTGetAPICurrentUserGuildsResult } from "discord-api-types/v10";
+import {
+  RESTGetAPICurrentUserGuildsResult,
+  RESTGetAPIUserResult,
+} from "discord-api-types/v10";
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
 import { createSession } from "@/lib/session";
+import { createGuild } from "@/lib/actions";
 
 const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID!;
 const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET!;
@@ -70,7 +74,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    const userData = await userResponse.json();
+    const userData: RESTGetAPIUserResult = await userResponse.json();
 
     if (!userData.id) {
       return NextResponse.redirect(
@@ -100,14 +104,15 @@ export async function GET(request: NextRequest) {
     const user = await prisma.user.upsert({
       where: { id: userData.id },
       update: {
-        name: userData.username,
+        username: userData.username,
         avatar: userData.avatar,
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token,
       },
       create: {
         id: userData.id,
-        name: userData.username,
+        discriminator: userData.discriminator,
+        username: userData.username,
         avatar: userData.avatar,
         accessToken: tokenData.access_token,
         refreshToken: tokenData.refresh_token,
@@ -126,6 +131,7 @@ export async function GET(request: NextRequest) {
     });
 
     for (let i = 0; i < userGuildsData.length; i++) {
+      // await createGuild(userGuildsData[i].id);
       await prisma.userGuild.create({
         data: {
           userId: userData.id,

@@ -1,6 +1,5 @@
 import "server-only";
 
-import { redirect } from "next/navigation";
 import { cache } from "react";
 
 import prisma from "./prisma";
@@ -13,7 +12,7 @@ export const verifySession = cache(async () => {
   const clientSession = await decrypt(session);
 
   if (!clientSession?.userId) {
-    redirect("/login");
+    return null;
   }
 
   return { isAuth: true, userId: clientSession.userId as string };
@@ -23,11 +22,11 @@ export const getUser = cache(async () => {
   const session = await verifySession();
 
   if (!session) return null;
-
   try {
-    const user = await prisma.user.findUnique({
+    const data = await prisma.user.findMany({
       where: { id: session.userId },
     });
+    const user = data[0];
 
     return user;
   } catch {
@@ -106,3 +105,47 @@ export const getGuilds = cache(async () => {
     return null;
   }
 });
+
+export async function getGuild(guildId: string) {
+  try {
+    if (!canUserManageGuild(guildId)) return null;
+    const guild = await prisma.guild.findUnique({
+      where: { id: guildId },
+    });
+
+    return guild;
+  } catch {
+    return null;
+  }
+}
+
+export async function getUserData() {
+  const session = await verifySession();
+
+  if (!session) return null;
+
+  try {
+    const data = await prisma.user.findMany({
+      where: { id: session.userId },
+    });
+    const user = data[0];
+
+    return user;
+  } catch {
+    return null;
+  }
+}
+
+
+export async function getWelcomer(guildId: string) {
+  try {
+    if (!canUserManageGuild(guildId)) return null;
+    const welcomer = await prisma.welcomer.findUnique({
+      where: { guildId },
+    });
+
+    return welcomer;
+  } catch {
+    return null;
+  }
+}

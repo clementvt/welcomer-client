@@ -6,20 +6,18 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
-import { APIGuild } from "discord-api-types/v10";
+import { UserGuild } from "@prisma/client";
 import NextLink from "next/link";
 
 import GuildCard from "./guildCard";
-
-import { APIGuildExtended } from "@/types";
 
 export function GuildSelectDropdown({
   guilds,
   currentGuild,
   isOpen,
 }: {
-  guilds: APIGuildExtended[];
-  currentGuild: APIGuild;
+  guilds: UserGuild[];
+  currentGuild: UserGuild;
   isOpen: boolean;
 }) {
   return (

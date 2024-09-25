@@ -1,10 +1,10 @@
 import NavbarUserDropdown from "./navbarUserDropdown";
 import { SignIn } from "./signinButton";
 
-import { getUserData } from "@/lib/dto";
+import { getUser } from "@/lib/dal";
 
 export default async function NavbarUser(): Promise<JSX.Element> {
-  const user = await getUserData();
+  const user = await getUser();
 
   if (!user)
     return (

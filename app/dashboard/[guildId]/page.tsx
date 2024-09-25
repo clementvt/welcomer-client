@@ -1,14 +1,14 @@
 import { Card, CardHeader } from "@nextui-org/card";
 import { redirect } from "next/navigation";
 
-import { getGuild } from "@/lib/dal";
+import { getUserGuild } from "@/lib/dal";
 
 export default async function Page({
   params,
 }: {
   params: { guildId: string };
 }) {
-  const guild = await getGuild(params.guildId);
+  const guild = await getUserGuild(params.guildId);
 
   if (!guild) redirect("/dashboard");
 
