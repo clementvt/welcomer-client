@@ -88,7 +88,6 @@ export async function createEmbed(welcomerId: number): Promise<Embed | null> {
     let guildId = guild?.guildId;
 
     if (!guildId || !(await canUserManageGuild(guildId))) return null;
-    console.log("Creating embed", await canUserManageGuild(guildId));
     const res = await prisma.embed.create({
       data: {
         welcomerId: welcomerId,
@@ -127,5 +126,31 @@ export async function removeEmbeds(welcomerId: number): Promise<void> {
   } catch (error) {
     console.error(error);
     throw new Error("Failed to delete embeds");
+  }
+}
+
+export async function removeEmbed(welcomerId: number, embedId: number) {
+  try {
+    const guild = await prisma.welcomer.findUnique({
+      where: {
+        id: welcomerId,
+      },
+      select: {
+        guildId: true,
+      },
+    });
+    let guildId = guild?.guildId;
+
+    if (!guildId || !(await canUserManageGuild(guildId))) return;
+    await prisma.embed.delete({
+      where: {
+        id: embedId,
+      },
+    });
+
+    revalidatePath(`/app/dashboard/${welcomerId}/welcome`);
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to delete embed");
   }
 }

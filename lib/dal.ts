@@ -1,5 +1,7 @@
 import "server-only";
 
+import { Leaver, Welcomer } from "@prisma/client";
+import { RESTGetAPIGuildChannelsResult } from "discord-api-types/v10";
 import { cache } from "react";
 
 import prisma from "./prisma";
@@ -136,7 +138,6 @@ export async function getUserData() {
   }
 }
 
-
 export async function getWelcomer(guildId: string) {
   try {
     if (!canUserManageGuild(guildId)) return null;
@@ -146,6 +147,48 @@ export async function getWelcomer(guildId: string) {
 
     return welcomer;
   } catch {
+    return null;
+  }
+}
+
+export async function getEmbeds(module: Welcomer | Leaver) {
+  try {
+    if (!canUserManageGuild(module.guildId)) return null;
+
+    const embeds = await prisma.embed.findMany({
+      // make the resquest either on welcomerId or leaverId
+      where: {
+        OR: [{ welcomerId: module.id }, { leaverId: module.id }],
+      },
+    });
+
+
+    return embeds;
+  } catch {
+    return null;
+  }
+}
+
+export async function getGuildChannels(guildId: string) {
+  // get guild channels from discord api
+  try {
+    if (!canUserManageGuild(guildId)) return null;
+    const data = await fetch(
+      "https://discord.com/api/guilds/" + guildId + "/channels",
+      {
+        headers: {
+          authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
+        },
+        next: {
+          revalidate: 60,
+        },
+      },
+    );
+
+    const channels: RESTGetAPIGuildChannelsResult = await data.json();
+
+    return channels;
+  } catch (error) {
     return null;
   }
 }

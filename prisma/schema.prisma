@@ -149,9 +149,20 @@ model UserGuild {
   icon      String?
   banner    String?
   permissions String?
+  channels  Channels[]
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model Channels {
+  id        String    @id
+  type      String
+  name      String
+  guildId   String
+  guild     UserGuild     @relation(fields: [guildId], references: [id])
+  channelId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

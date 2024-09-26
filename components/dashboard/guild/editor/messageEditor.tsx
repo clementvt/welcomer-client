@@ -4,11 +4,11 @@ import ChannelSelector from "./channelSelector";
 import ContentEditor from "./contentEditor";
 import EmbedMenuAccordion from "./embed/embedMenuAccordion";
 
-import { getModuleEmbeds } from "@/lib/dal";
-import { getGuildChannels } from "@/lib/dto";
+import { getEmbeds } from "@/lib/dal";
+import { getGuildChannels } from "@/lib/dal";
 export async function MessageEditor({ module }: { module: Welcomer | Leaver }) {
   const channels = await getGuildChannels(module.guildId);
-  const embeds = await getModuleEmbeds(module);
+  const embeds = await getEmbeds(module);
 
   return (
     <div className="lg:w-1/2 container px-4">

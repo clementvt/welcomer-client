@@ -17,7 +17,7 @@ export default function ChannelSelector({
               ?.filter((c) => c.type === 0)
               ?.filter((c) => c.parent_id === channel.id)
               .map((c) => (
-                <SelectItem key={c.id} textValue={c.id}>
+                <SelectItem key={c.id} textValue={c.name}>
                   {c.name} ({c.id})
                 </SelectItem>
               ))}
