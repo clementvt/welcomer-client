@@ -162,7 +162,6 @@ export async function getEmbeds(module: Welcomer | Leaver) {
       },
     });
 
-
     return embeds;
   } catch {
     return null;
@@ -189,6 +188,33 @@ export async function getGuildChannels(guildId: string) {
 
     return channels;
   } catch (error) {
+    return null;
+  }
+}
+
+export async function getEmbedAuthor(embedId: number) {
+  try {
+    const author = await prisma.embedAuthor.findUnique({
+      where: { embedId: embedId },
+    });
+
+    return author;
+  } catch {
+    return null;
+  }
+}
+
+export async function createEmbedAuthor(embedId: number, name: string) {
+  try {
+    const author = await prisma.embedAuthor.create({
+      data: {
+        embedId: embedId,
+        name: name,
+      },
+    });
+
+    return author;
+  } catch {
     return null;
   }
 }

@@ -1,7 +1,6 @@
 "use server";
 
 import { Embed, Guild, Welcomer } from "@prisma/client";
-import { APIGuild } from "discord-api-types/v10";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -38,7 +37,7 @@ export async function createWelcomer(
   guildId: string,
 ): Promise<Welcomer | null> {
   try {
-    if (!canUserManageGuild(guildId)) return null;
+    if (!(await canUserManageGuild(guildId))) return null;
 
     const res = await prisma.welcomer.create({
       data: {
@@ -59,8 +58,9 @@ export async function removeWelcomer(
   guildId: string,
 ): Promise<Welcomer | null> {
   try {
-    if (!canUserManageGuild(guildId)) return null;
+    if (!(await canUserManageGuild(guildId))) return null;
 
+    
     const res = await prisma.welcomer.delete({
       where: {
         guildId: guildId,
@@ -72,7 +72,7 @@ export async function removeWelcomer(
     return res;
   } catch (error) {
     console.error(error);
-    throw new Error("Failed to delete welcomer");
+    return null
   }
 }
 export async function createEmbed(welcomerId: number): Promise<Embed | null> {
