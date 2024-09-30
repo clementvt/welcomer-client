@@ -34,7 +34,7 @@
 		"@react-aria/ssr": "3.9.4",
 		"@react-aria/visually-hidden": "3.8.15",
 		"clsx": "2.1.1",
-		"discord-api-types": "^0.37.100",
+		"discord-api-types": "^0.37.101",
 		"framer-motion": "~11.5.4",
 		"intl-messageformat": "^10.5.0",
 		"jose": "^5.8.0",
