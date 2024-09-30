@@ -595,22 +595,13 @@
     "@nextui-org/system" "2.2.6"
     "@nextui-org/use-measure" "2.0.2"
 
-"@nextui-org/image@2.0.32":
+"@nextui-org/image@2.0.32", "@nextui-org/image@^2.0.32":
   version "2.0.32"
   resolved "https://registry.yarnpkg.com/@nextui-org/image/-/image-2.0.32.tgz#4011ca965f691a615fcc396aaf09542ebcc47927"
   integrity sha512-JpE0O8qAeJpQA61ZnXNLH76to+dbx93PR5tTOxSvmTxtnuqVg4wl5ar/SBY3czibJPr0sj33k8Mv2EfULjoH7Q==
   dependencies:
     "@nextui-org/react-utils" "2.0.17"
     "@nextui-org/shared-utils" "2.0.8"
-    "@nextui-org/use-image" "2.0.6"
-
-"@nextui-org/image@^2.0.31":
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/@nextui-org/image/-/image-2.0.31.tgz#d5eb70bf18a2b4b02e091aa1ccdcc030785bbaca"
-  integrity sha512-HxWaGUBtNaT9pLGvDo5Q2ruGxdhXYrdNcLvRhtoohiZeIKo1Y8jTbBUCVGxdxklTZAF3H7klrTcsdSwHTGfk0g==
-  dependencies:
-    "@nextui-org/react-utils" "2.0.16"
-    "@nextui-org/shared-utils" "2.0.7"
     "@nextui-org/use-image" "2.0.6"
 
 "@nextui-org/input@2.2.4":
