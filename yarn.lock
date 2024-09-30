@@ -659,20 +659,6 @@
     "@nextui-org/system-rsc" "2.1.6"
     "@react-aria/utils" "3.24.1"
 
-"@nextui-org/link@2.0.34":
-  version "2.0.34"
-  resolved "https://registry.yarnpkg.com/@nextui-org/link/-/link-2.0.34.tgz#c3e5b61fca4a75274903a6c63eef72397196650a"
-  integrity sha512-497AvjzckEB/TE1eJEziS2QkxwCY81RPsWoApNSeHGdYrMO1tfgUFKATgadfBQjoba6FdCcLc2QaUapOetqFaA==
-  dependencies:
-    "@nextui-org/react-utils" "2.0.16"
-    "@nextui-org/shared-icons" "2.0.9"
-    "@nextui-org/shared-utils" "2.0.7"
-    "@nextui-org/use-aria-link" "2.0.19"
-    "@react-aria/focus" "3.17.1"
-    "@react-aria/link" "3.7.1"
-    "@react-aria/utils" "3.24.1"
-    "@react-types/link" "3.5.5"
-
 "@nextui-org/link@2.0.35":
   version "2.0.35"
   resolved "https://registry.yarnpkg.com/@nextui-org/link/-/link-2.0.35.tgz#ce0428a8cc3e9dc0a8a6481bb39f1ea369aea9e8"
