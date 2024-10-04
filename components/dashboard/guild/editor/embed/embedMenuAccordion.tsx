@@ -1,26 +1,25 @@
-import { Embed } from "@prisma/client";
+import { Leaver, Welcomer } from "@prisma/client";
 
 import CreateEmbedButton from "./createEmbedButton";
+import EmbedsViewer from "./embedsViewer";
 import RemoveEmbedsButton from "./removeEmbedsButton";
 
-import EmbedsAccordion from "@/components/Accordion/EmbedsAccordion";
 import EmbedsAccordionWrapper from "@/components/Accordion/EmbedsAccordionWrapper";
-
-export default function EmbedMenuAccordion({
-  embeds,
-  moduleId,
+import { getEmbeds } from "@/lib/dal";
+export default async function EmbedMenuAccordion({
+  module,
 }: {
-  embeds: Embed[];
-  moduleId: number;
+  module: Welcomer | Leaver;
 }) {
+  const embeds = await getEmbeds(module);
+  const embedsLenght = embeds ? embeds.length : 0;
+  
   return (
-    <EmbedsAccordionWrapper embedsLength={embeds.length}>
-      <div className="mb-2">
-        <EmbedsAccordion embeds={embeds} />
-      </div>
-      <div className="sm:flex-row flex-col flex">
-        <CreateEmbedButton moduleId={moduleId} />
-        <RemoveEmbedsButton embedsLenght={embeds.length} moduleId={moduleId} />
+    <EmbedsAccordionWrapper embedsLength={embedsLenght}>
+      <EmbedsViewer embeds={embeds} />
+      <div className="sm:flex-row flex-col flex mt-5">
+        <CreateEmbedButton moduleId={module.id} />
+        <RemoveEmbedsButton embedsLenght={embedsLenght} moduleId={module.id} />
       </div>
     </EmbedsAccordionWrapper>
 

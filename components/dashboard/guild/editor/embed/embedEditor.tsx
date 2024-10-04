@@ -1,7 +1,9 @@
-import { Embed } from "@prisma/client";
+import { getEmbedAuthor } from "@/lib/dal";
+import { EmbedExtended } from "@/types";
 
-import EmbedAccordion from "@/components/Accordion/EmbedAccordion";
+export async function EmbedEditor({ embed }: { embed: EmbedExtended }) {
+  console.log(embed);
+  const embedAuthor = await getEmbedAuthor(embed.id);
 
-export default function EmbedEditor({ embed }: { embed: Embed }) {
-  return <EmbedAccordion />;
+  return <div>{JSON.stringify(embed)}</div>;
 }

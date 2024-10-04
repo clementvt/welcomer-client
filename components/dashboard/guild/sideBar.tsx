@@ -28,7 +28,7 @@ export function Sidebar({
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <aside className="h-screen fixed lg:relative z-50">
+    <aside className="h-screen fixed z-50">
       <nav className="h-full flex flex-col bg-slate-800 border-r border-slate-700 shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center align-center">
           <div className={` items-center h-10 justify-start flex flex-row `}>

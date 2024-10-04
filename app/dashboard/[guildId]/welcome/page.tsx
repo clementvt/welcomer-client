@@ -13,7 +13,6 @@ export default async function Page({
 }) {
   const welcomerParams = await getWelcomer(params.guildId);
   const guild = await getGuild(params.guildId);
-  // const channels = await getGuildChannels(params.guildId);
 
   if (!guild) redirect("/dashboard");
 
@@ -29,13 +28,13 @@ export default async function Page({
   );
 
   return (
-    <Card className="w-full lg:w-5/6">
+    <Card className="w-full min-h-[95vh] lg:w-11/12 h-fit pb-5">
       <WelcomeCardHeader />
       {welcomerParams ? (
-        <>
+        <div>
           <Divider className="mb-2" />
           <Editor module={welcomerParams} />
-        </>
+        </div>
       ) : null}
     </Card>
   );

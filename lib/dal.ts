@@ -160,11 +160,18 @@ export async function getEmbeds(module: Welcomer | Leaver) {
       where: {
         OR: [{ welcomerId: module.id }, { leaverId: module.id }],
       },
+      include: {
+        author: true,
+        fields: true,
+        footer: true,
+        image: true,
+        thumbnail: true,
+      },
     });
 
     return embeds;
   } catch {
-    return null;
+    return [];
   }
 }
 
