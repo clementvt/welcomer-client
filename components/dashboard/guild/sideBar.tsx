@@ -14,7 +14,12 @@ import { LogoutIcon } from "./logoutIcon";
 import { Logo } from "@/components/icons";
 import { getUserAvatar } from "@/lib/utils";
 
-const SidebarContext = createContext({ isOpen: true });
+const SidebarContext = createContext({
+  isOpen: true,
+  setIsOpen: (_isOpen: boolean) => {},
+  active: null,
+  setActive: (_active: any) => {},
+});
 
 export function Sidebar({
   currentGuild,
@@ -26,6 +31,7 @@ export function Sidebar({
   user: User;
 }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [active, setActive] = useState("dashboard");
 
   return (
     <aside className="h-screen fixed z-50">
@@ -90,24 +96,33 @@ export function Sidebar({
         />
         <Divider className="my-2" />
 
-        <SidebarContext.Provider value={{ isOpen }}>
+        <SidebarContext.Provider
+          value={{ isOpen, setIsOpen, active, setActive }}
+        >
           <ul className="flex-1 px-3">
-            <SidebarItem icon={<FaHome />} link={"/dashboard"} text="Home" />
             <SidebarItem
-              active
+              active={active === "home"}
+              icon={<FaHome />}
+              link={"/dashboard"}
+              text="Home"
+            />
+            <SidebarItem
+              active={active === "dashboard"}
               icon={<FaHome />}
               link={`/dashboard/${currentGuild.id}`}
               text="Dashboard"
             />
             <SidebarItem
+              active={active === "welcomer"}
               icon={<ImEnter />}
               link={`/dashboard/${currentGuild.id}/welcome`}
               text="Welcomer"
             />
             <SidebarItem
+              active={active === "leave"}
               icon={<FaDoorOpen />}
               link={`/dashboard/${currentGuild.id}/leave`}
-              text="Dashboard"
+              text="Leaver"
             />
           </ul>
         </SidebarContext.Provider>
@@ -144,10 +159,15 @@ export function SidebarItem({
   link: string;
   active?: boolean;
 }) {
-  const { isOpen } = useContext(SidebarContext);
+  const { isOpen, setIsOpen, setActive } = useContext(SidebarContext);
 
   return (
-    <Link href={link}>
+    <Link
+      href={link}
+      onClick={() => {
+        setIsOpen(false), setActive(text.toLowerCase());
+      }}
+    >
       <li
         className={`relative flex items-center justify-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
