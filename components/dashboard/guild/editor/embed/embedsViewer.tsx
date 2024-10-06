@@ -3,6 +3,7 @@
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 import { EmbedAuthorFields } from "./author/EmbedAuthorFields";
+import { EmbedBodyFields } from "./body/EmbedBodyFields";
 
 import { EmbedExtended } from "@/types";
 
@@ -20,12 +21,16 @@ export default function EmbedsViewer({
       <Accordion variant="splitted">
         {embeds.map((embed, index) => (
           <AccordionItem key={index} title={`Embed ${index + 1}`}>
-            <Accordion selectionMode="multiple" variant="bordered">
+            <Accordion
+              defaultSelectedKeys={"all"}
+              selectionMode="multiple"
+              variant="bordered"
+            >
               <AccordionItem key={1} aria-label="Author" title="Author">
                 <EmbedAuthorFields embed={embed} />
               </AccordionItem>
               <AccordionItem key={2} aria-label="Body" title="Body">
-                Body
+                <EmbedBodyFields embed={embed} />
               </AccordionItem>
               <AccordionItem key={3} aria-label="Footer" title="Footer">
                 Footer

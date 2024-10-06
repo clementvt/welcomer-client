@@ -4,11 +4,11 @@ import { Input } from "@nextui-org/input";
 import { useState } from "react";
 
 export function EmbedAuthorUrlInput({
-  icon,
+  url,
 }: {
-  icon: string | null | undefined;
+  url: string | null | undefined;
 }) {
-  const [value, setValue] = useState(icon ?? "");
+  const [value, setValue] = useState(url ?? "");
 
   return <Input label={"Author url"} value={value} onValueChange={setValue} />;
 }

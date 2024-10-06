@@ -10,7 +10,7 @@ export function EmbedAuthorFields({ embed }: { embed: EmbedExtended }) {
       <EmbedAuthorNameInput name={embed.author?.name} />
       <div className="flex flex-row space-x-4 mt-5">
         <EmbedAuthorIconInput icon={embed.author?.iconUrl} />
-        <EmbedAuthorUrlInput icon={embed.author?.url} />
+        <EmbedAuthorUrlInput url={embed.author?.url} />
       </div>
     </div>
   );
