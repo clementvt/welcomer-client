@@ -3,12 +3,12 @@
 import { Input } from "@nextui-org/input";
 import { useState } from "react";
 
-export function EmbedAuthorIconInput({
+export function EmbedAuthorUrlInput({
   icon,
 }: {
   icon: string | null | undefined;
 }) {
   const [value, setValue] = useState(icon ?? "");
 
-  return <Input label={"Icon url"} value={value} onValueChange={setValue} />;
+  return <Input label={"Author url"} value={value} onValueChange={setValue} />;
 }
