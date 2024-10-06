@@ -25,7 +25,6 @@ export default function NavbarUserDropdown({ user }: { user: User }) {
           showFallback
           as="button"
           className="transition-transform"
-          color="secondary"
           name={user.username || "Discord User"}
           size="sm"
           src={getUserAvatar(user)}
@@ -39,9 +38,11 @@ export default function NavbarUserDropdown({ user }: { user: User }) {
                 src: getUserAvatar(user),
                 size: "sm",
                 showFallback: true,
+                isBordered: true,
                 name: user.username || "Discord User",
               }}
               name={user.username}
+              description={user.id}
             />
           </DropdownItem>
         </DropdownSection>

@@ -1,11 +1,13 @@
-import { Embed } from "@prisma/client";
-
+import { EmbedAuthorIconInput } from "./EmbedAuthorIcon";
 import { EmbedAuthorNameInput } from "./EmbedAuthorNameInput";
 
-export async function EmbedAuthorFields({ embed }: { embed: Embed }) {
+import { EmbedExtended } from "@/types";
+
+export function EmbedAuthorFields({ embed }: { embed: EmbedExtended }) {
   return (
-    <div>
+    <div className="flex flex-row space-x-4">
       <EmbedAuthorNameInput name={embed.author?.name} />
+      <EmbedAuthorIconInput icon={embed.author?.iconUrl} />
     </div>
   );
 }

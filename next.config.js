@@ -7,7 +7,8 @@ const nextConfig = {
                 hostname: 'cdn.discordapp.com',
             }
         ],
-    }
+    },
+    crossOrigin: 'anonymous',
 }
 
 module.exports = nextConfig

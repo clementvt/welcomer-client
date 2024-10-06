@@ -17,7 +17,7 @@ import { getUserAvatar } from "@/lib/utils";
 const SidebarContext = createContext({
   isOpen: true,
   setIsOpen: (_isOpen: boolean) => {},
-  active: null,
+  active: "dashboard",
   setActive: (_active: any) => {},
 });
 
@@ -139,6 +139,7 @@ export function Sidebar({
                 src: getUserAvatar(user),
               }}
               name={user.username}
+              description={user.id}
             />
           </div>
           <LogoutIcon />
