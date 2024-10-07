@@ -498,16 +498,6 @@
     "@react-types/datepicker" "3.7.4"
     "@react-types/shared" "3.23.1"
 
-"@nextui-org/divider@2.0.31":
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/@nextui-org/divider/-/divider-2.0.31.tgz#cd8f4bb0bb8ace65ef92d026be44dd7a1a322285"
-  integrity sha512-z9GhrpmhXhJGuW0GSO1OP01mwDTSItuIRIz0VGpKOPVTqOzOMHkXN978wgNXqJ+knWZcaiF7WHvd83O05jmbkg==
-  dependencies:
-    "@nextui-org/react-rsc-utils" "2.0.13"
-    "@nextui-org/shared-utils" "2.0.7"
-    "@nextui-org/system-rsc" "2.1.5"
-    "@react-types/shared" "3.23.1"
-
 "@nextui-org/divider@2.0.32", "@nextui-org/divider@^2.0.32":
   version "2.0.32"
   resolved "https://registry.yarnpkg.com/@nextui-org/divider/-/divider-2.0.32.tgz#831a19f454e4dd259662134a066e6e6c25576f42"
@@ -634,24 +624,6 @@
     "@react-aria/link" "3.7.1"
     "@react-aria/utils" "3.24.1"
     "@react-types/link" "3.5.5"
-
-"@nextui-org/listbox@2.1.25":
-  version "2.1.25"
-  resolved "https://registry.yarnpkg.com/@nextui-org/listbox/-/listbox-2.1.25.tgz#f48413997b93fc69271fdcf28002efce39314a3b"
-  integrity sha512-WJqxhzPxADLIsenREaaoQ44bs3gQx5yqOvK86Jkiv/m9nXr0YuxZOJEsVa5GenkmyJBrEd6LkBV5cZ1TGNzbJw==
-  dependencies:
-    "@nextui-org/aria-utils" "2.0.24"
-    "@nextui-org/divider" "2.0.31"
-    "@nextui-org/react-utils" "2.0.16"
-    "@nextui-org/shared-utils" "2.0.7"
-    "@nextui-org/use-is-mobile" "2.0.9"
-    "@react-aria/focus" "3.17.1"
-    "@react-aria/interactions" "3.21.3"
-    "@react-aria/listbox" "3.12.1"
-    "@react-aria/utils" "3.24.1"
-    "@react-stately/list" "3.10.5"
-    "@react-types/menu" "3.9.9"
-    "@react-types/shared" "3.23.1"
 
 "@nextui-org/listbox@2.1.27":
   version "2.1.27"
