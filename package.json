@@ -30,7 +30,7 @@
 		"@nextui-org/system": "2.2.5",
 		"@nextui-org/theme": "2.2.9",
 		"@nextui-org/user": "^2.0.33",
-		"@prisma/client": "5.19.1",
+		"@prisma/client": "5.20.0",
 		"@react-aria/ssr": "3.9.4",
 		"@react-aria/visually-hidden": "3.8.15",
 		"clsx": "2.1.1",
